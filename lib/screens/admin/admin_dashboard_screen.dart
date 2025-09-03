@@ -227,75 +227,88 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Title and controls section
-          Row(
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Products',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.onSurface,
-                ),
+              Row(
+                children: [
+                  Text(
+                    'Products',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                  ),
+                  const Spacer(),
+                  if (_selectedProducts.isNotEmpty)
+                    Text(
+                      '${_selectedProducts.length} selected',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                ],
               ),
-              const Spacer(),
               if (_selectedProducts.isNotEmpty) ...[
-                Text(
-                  '${_selectedProducts.length} selected',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.primary,
-                    fontWeight: FontWeight.w600,
+                const SizedBox(height: 12),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      ElevatedButton.icon(
+                        onPressed: _selectedProducts.length == 1
+                            ? () => _bulkActivateProducts()
+                            : null,
+                        icon: const Icon(Icons.check_circle, size: 16),
+                        label: const Text('Activate'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF10B981),
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 8,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      ElevatedButton.icon(
+                        onPressed: _selectedProducts.length == 1
+                            ? () => _bulkDeactivateProducts()
+                            : null,
+                        icon: const Icon(Icons.pause_circle, size: 16),
+                        label: const Text('Deactivate'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFF59E0B),
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 8,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      ElevatedButton.icon(
+                        onPressed: () => _bulkDeleteProducts(),
+                        icon: const Icon(Icons.delete, size: 16),
+                        label: const Text('Delete'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFEF4444),
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 8,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      TextButton(
+                        onPressed: () => setState(() => _selectedProducts.clear()),
+                        child: const Text('Clear'),
+                      ),
+                    ],
                   ),
-                ),
-                const SizedBox(width: 8),
-                ElevatedButton.icon(
-                  onPressed: _selectedProducts.length == 1
-                      ? () => _bulkActivateProducts()
-                      : null,
-                  icon: const Icon(Icons.check_circle, size: 16),
-                  label: const Text('Activate'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF10B981),
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 8,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                ElevatedButton.icon(
-                  onPressed: _selectedProducts.length == 1
-                      ? () => _bulkDeactivateProducts()
-                      : null,
-                  icon: const Icon(Icons.pause_circle, size: 16),
-                  label: const Text('Deactivate'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFF59E0B),
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 8,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                ElevatedButton.icon(
-                  onPressed: () => _bulkDeleteProducts(),
-                  icon: const Icon(Icons.delete, size: 16),
-                  label: const Text('Delete'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFEF4444),
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 8,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                TextButton(
-                  onPressed: () => setState(() => _selectedProducts.clear()),
-                  child: const Text('Clear'),
                 ),
               ],
             ],
@@ -306,99 +319,99 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
-              children: [
+            children: [
                 SizedBox(
                   width: 200,
-                  child: DropdownButtonFormField<String>(
-                    initialValue: _productFilter,
-                    decoration: const InputDecoration(
-                      labelText: 'Filter',
-                      border: OutlineInputBorder(),
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 8,
-                      ),
+                child: DropdownButtonFormField<String>(
+                  initialValue: _productFilter,
+                  decoration: const InputDecoration(
+                    labelText: 'Filter',
+                    border: OutlineInputBorder(),
+                    contentPadding: EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 8,
                     ),
-                    items: const [
+                  ),
+                  items: const [
                       DropdownMenuItem(
                         value: 'all',
                         child: Text('All Products'),
                       ),
-                      DropdownMenuItem(
-                        value: 'active',
-                        child: Text('Active Only'),
-                      ),
-                      DropdownMenuItem(
-                        value: 'inactive',
-                        child: Text('Inactive Only'),
-                      ),
-                      DropdownMenuItem(
-                        value: 'out_of_stock',
-                        child: Text('Out of Stock'),
-                      ),
-                    ],
+                    DropdownMenuItem(
+                      value: 'active',
+                      child: Text('Active Only'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'inactive',
+                      child: Text('Inactive Only'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'out_of_stock',
+                      child: Text('Out of Stock'),
+                    ),
+                  ],
                     onChanged: (value) =>
                         setState(() => _productFilter = value!),
-                  ),
                 ),
-                const SizedBox(width: 12),
+              ),
+              const SizedBox(width: 12),
                 SizedBox(
                   width: 200,
-                  child: DropdownButtonFormField<String>(
-                    initialValue: _productSortBy,
-                    decoration: const InputDecoration(
-                      labelText: 'Sort By',
-                      border: OutlineInputBorder(),
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 8,
-                      ),
+                child: DropdownButtonFormField<String>(
+                  initialValue: _productSortBy,
+                  decoration: const InputDecoration(
+                    labelText: 'Sort By',
+                    border: OutlineInputBorder(),
+                    contentPadding: EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 8,
                     ),
-                    items: const [
-                      DropdownMenuItem(value: 'name', child: Text('Name A-Z')),
-                      DropdownMenuItem(
-                        value: 'name_desc',
-                        child: Text('Name Z-A'),
-                      ),
-                      DropdownMenuItem(
-                        value: 'price',
-                        child: Text('Price Low-High'),
-                      ),
-                      DropdownMenuItem(
-                        value: 'price_desc',
-                        child: Text('Price High-Low'),
-                      ),
-                      DropdownMenuItem(
-                        value: 'stock',
-                        child: Text('Stock Low-High'),
-                      ),
-                      DropdownMenuItem(
-                        value: 'created',
-                        child: Text('Newest First'),
-                      ),
-                    ],
+                  ),
+                  items: const [
+                    DropdownMenuItem(value: 'name', child: Text('Name A-Z')),
+                    DropdownMenuItem(
+                      value: 'name_desc',
+                      child: Text('Name Z-A'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'price',
+                      child: Text('Price Low-High'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'price_desc',
+                      child: Text('Price High-Low'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'stock',
+                      child: Text('Stock Low-High'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'created',
+                      child: Text('Newest First'),
+                    ),
+                  ],
                     onChanged: (value) =>
                         setState(() => _productSortBy = value!),
-                  ),
                 ),
-                const SizedBox(width: 12),
-                ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const Base64ProductFormScreen(),
-                      ),
-                    );
-                  },
-                  icon: const Icon(Icons.add),
-                  label: const Text('Add Product'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF10B981),
-                    foregroundColor: Colors.white,
-                  ),
+              ),
+              const SizedBox(width: 12),
+              ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const Base64ProductFormScreen(),
+                    ),
+                  );
+                },
+                icon: const Icon(Icons.add),
+                label: const Text('Add Product'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF10B981),
+                  foregroundColor: Colors.white,
                 ),
-              ],
+              ),
+            ],
             ),
           ),
           const SizedBox(height: 16),
@@ -406,117 +419,117 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
           // Products list
           if (filteredProducts.isEmpty)
             Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.inventory_2_outlined,
-                    size: 64,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.inventory_2_outlined,
+                          size: 64,
                     color: Theme.of(
                       context,
                     ).colorScheme.onSurface.withOpacity(0.5),
-                  ),
+                        ),
                   const SizedBox(height: 16),
-                  Text(
-                    'No products found',
-                    style: TextStyle(
-                      fontSize: 18,
+                        Text(
+                          'No products found',
+                          style: TextStyle(
+                            fontSize: 18,
                       color: Theme.of(context).colorScheme.onSurface,
-                    ),
-                  ),
+                          ),
+                        ),
                   const SizedBox(height: 8),
-                  Text(
-                    'Try adjusting your filters or add a new product',
+                        Text(
+                          'Try adjusting your filters or add a new product',
                     style: TextStyle(
                       color: Theme.of(
                         context,
                       ).colorScheme.onSurface.withOpacity(0.7),
                     ),
-                  ),
-                ],
-              ),
-            )
+                        ),
+                      ],
+                    ),
+                  )
           else
             ...filteredProducts.map((product) {
-              final isSelected = _selectedProducts.contains(product.id);
+                      final isSelected = _selectedProducts.contains(product.id);
 
-              return Card(
-                margin: const EdgeInsets.only(bottom: 8),
-                child: CheckboxListTile(
-                  value: isSelected,
-                  onChanged: (value) {
-                    setState(() {
-                      if (value == true) {
-                        _selectedProducts.add(product.id);
-                      } else {
-                        _selectedProducts.remove(product.id);
-                      }
-                    });
-                  },
-                  title: Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          product.name,
+                      return Card(
+                        margin: const EdgeInsets.only(bottom: 8),
+                        child: CheckboxListTile(
+                          value: isSelected,
+                          onChanged: (value) {
+                            setState(() {
+                              if (value == true) {
+                                _selectedProducts.add(product.id);
+                              } else {
+                                _selectedProducts.remove(product.id);
+                              }
+                            });
+                          },
+                          title: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  product.name,
                           style: const TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: product.isActive
-                              ? const Color(0xFF10B981)
-                              : const Color(0xFF6B7280),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Text(
-                          product.isActive ? 'Active' : 'Inactive',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 4,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: product.isActive
+                                      ? const Color(0xFF10B981)
+                                      : const Color(0xFF6B7280),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Text(
+                                  product.isActive ? 'Active' : 'Inactive',
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 4),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: 4),
                       Text('Price: \$${product.price.toStringAsFixed(2)}'),
-                      Text('Stock: ${product.stock} units'),
-                      if (product.stock == 0)
-                        const Text(
-                          'OUT OF STOCK',
-                          style: TextStyle(
-                            color: Color(0xFFEF4444),
-                            fontWeight: FontWeight.bold,
+                              Text('Stock: ${product.stock} units'),
+                              if (product.stock == 0)
+                                const Text(
+                                  'OUT OF STOCK',
+                                  style: TextStyle(
+                                    color: Color(0xFFEF4444),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                            ],
+                          ),
+                          secondary: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                onPressed: () => _editProduct(product),
+                                icon: const Icon(Icons.edit),
+                                tooltip: 'Edit Product',
+                              ),
+                              IconButton(
+                                onPressed: () => _deleteProduct(product),
+                                icon: const Icon(Icons.delete),
+                                tooltip: 'Delete Product',
+                                color: const Color(0xFFEF4444),
+                              ),
+                            ],
                           ),
                         ),
-                    ],
-                  ),
-                  secondary: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        onPressed: () => _editProduct(product),
-                        icon: const Icon(Icons.edit),
-                        tooltip: 'Edit Product',
-                      ),
-                      IconButton(
-                        onPressed: () => _deleteProduct(product),
-                        icon: const Icon(Icons.delete),
-                        tooltip: 'Delete Product',
-                        color: const Color(0xFFEF4444),
-                      ),
-                    ],
-                  ),
-                ),
-              );
+                      );
             }).toList(),
         ],
       ),

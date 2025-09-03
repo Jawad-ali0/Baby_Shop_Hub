@@ -511,7 +511,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
                             color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          child: Text(
+        child: Text(
                             'Default',
                             style: TextStyle(
                               fontSize: 12,
