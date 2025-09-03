@@ -5,6 +5,7 @@ import '../../services/auth_service.dart';
 import '../../services/product_service.dart';
 import '../../services/cart_service.dart';
 import '../../services/connectivity_service.dart';
+import '../../services/theme_service.dart';
 import '../../routes/app_router.dart';
 import '../../widgets/error_toast.dart';
 import '../../widgets/shimmer_widget.dart';
@@ -77,20 +78,34 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC),
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         surfaceTintColor: Colors.transparent,
         elevation: 0,
-        title: const Text(
+        title: Text(
           'Baby Shop Hub',
           style: TextStyle(
-            color: Color(0xFF1E293B),
+            color: Theme.of(context).colorScheme.onSurface,
             fontWeight: FontWeight.bold,
             fontSize: 24,
           ),
         ),
         actions: [
+          Consumer<ThemeService>(
+            builder: (context, theme, _) {
+              return IconButton(
+                icon: Icon(
+                  theme.isDark ? Icons.light_mode : Icons.dark_mode,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                onPressed: () => theme.toggleDarkMode(),
+                tooltip: theme.isDark
+                    ? 'Switch to Light Mode'
+                    : 'Switch to Dark Mode',
+              );
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.shopping_cart, color: Color(0xFF6366F1)),
             onPressed: () {
@@ -110,11 +125,11 @@ class _HomeScreenState extends State<HomeScreen> {
           Container(
             margin: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.surface,
               borderRadius: BorderRadius.circular(12),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.05),
+                  color: Theme.of(context).colorScheme.shadow.withOpacity(0.05),
                   blurRadius: 10,
                   offset: const Offset(0, 2),
                 ),

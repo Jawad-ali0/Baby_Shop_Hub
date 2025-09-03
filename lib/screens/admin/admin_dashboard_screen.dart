@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../services/product_service.dart';
 import '../../services/order_service.dart';
 import '../../services/support_service.dart';
+import '../../services/theme_service.dart';
 import '../../models/order.dart';
 import '../../models/product.dart';
 import '../../models/support_ticket.dart';
@@ -44,27 +45,48 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC),
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         surfaceTintColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFF1E293B)),
+          icon: Icon(
+            Icons.arrow_back,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: const Text(
+        title: Text(
           'Admin Dashboard',
           style: TextStyle(
-            color: Color(0xFF1E293B),
+            color: Theme.of(context).colorScheme.onSurface,
             fontWeight: FontWeight.bold,
           ),
         ),
+        actions: [
+          Consumer<ThemeService>(
+            builder: (context, theme, _) {
+              return IconButton(
+                icon: Icon(
+                  theme.effectiveIsDark ? Icons.light_mode : Icons.dark_mode,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                onPressed: () => theme.toggleDarkMode(),
+                tooltip: theme.effectiveIsDark
+                    ? 'Switch to Light Mode'
+                    : 'Switch to Dark Mode',
+              );
+            },
+          ),
+        ],
         bottom: TabBar(
           controller: _tabController,
-          indicatorColor: const Color(0xFF6366F1),
-          labelColor: const Color(0xFF6366F1),
-          unselectedLabelColor: const Color(0xFF64748B),
+          indicatorColor: Theme.of(context).colorScheme.primary,
+          labelColor: Theme.of(context).colorScheme.primary,
+          unselectedLabelColor: Theme.of(
+            context,
+          ).colorScheme.onSurface.withOpacity(0.6),
           tabs: const [
             Tab(text: 'Overview'),
             Tab(text: 'Products'),
@@ -92,12 +114,12 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               'Dashboard Overview',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF1E293B),
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
             const SizedBox(height: 24),

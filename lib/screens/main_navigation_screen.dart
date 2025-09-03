@@ -58,26 +58,28 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       body: _screens[_currentIndex],
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: Theme.of(context).colorScheme.shadow.withOpacity(0.1),
               blurRadius: 20,
               offset: const Offset(0, -5),
             ),
           ],
         ),
         child: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (index) {
+          currentIndex: _currentIndex,
+          onTap: (index) {
             setState(() {
               _currentIndex = index;
             });
-        },
-        type: BottomNavigationBarType.fixed,
-          backgroundColor: Colors.white,
-        selectedItemColor: const Color(0xFF6366F1),
-        unselectedItemColor: const Color(0xFF94A3B8),
+          },
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          selectedItemColor: Theme.of(context).colorScheme.primary,
+          unselectedItemColor: Theme.of(
+            context,
+          ).colorScheme.onSurface.withOpacity(0.6),
           selectedLabelStyle: const TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 12,
@@ -88,33 +90,33 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           ),
           items: const [
             BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            activeIcon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
+              icon: Icon(Icons.home_outlined),
+              activeIcon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
               icon: Icon(Icons.shopping_cart_outlined),
               activeIcon: Icon(Icons.shopping_cart),
-            label: 'Cart',
-          ),
+              label: 'Cart',
+            ),
             BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_bag_outlined),
-            activeIcon: Icon(Icons.shopping_bag),
-            label: 'Orders',
-          ),
+              icon: Icon(Icons.shopping_bag_outlined),
+              activeIcon: Icon(Icons.shopping_bag),
+              label: 'Orders',
+            ),
             BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            activeIcon: Icon(Icons.person),
-            label: 'Profile',
-          ),
+              icon: Icon(Icons.person_outline),
+              activeIcon: Icon(Icons.person),
+              label: 'Profile',
+            ),
             BottomNavigationBarItem(
               icon: Icon(Icons.support_agent_outlined),
               activeIcon: Icon(Icons.support_agent),
               label: 'Support',
-                ),
-              ],
             ),
-          ),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -10,15 +10,15 @@ class ProfileManagementScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC),
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         surfaceTintColor: Colors.transparent,
         elevation: 0,
-        title: const Text(
+        title: Text(
           'Profile',
           style: TextStyle(
-            color: Color(0xFF1E293B),
+            color: Theme.of(context).colorScheme.onSurface,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -180,22 +180,80 @@ class ProfileManagementScreen extends StatelessWidget {
                 const SizedBox(height: 8),
                 Text(
                   user.email,
-                  style: TextStyle(fontSize: 16, color: Colors.grey.shade600),
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withOpacity(0.7),
+                  ),
                 ),
                 const SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                Column(
                   children: [
-                    FilterChip(
-                      label: const Text('Dark mode'),
-                      selected: theme.isDark,
-                      onSelected: (_) => theme.toggleDarkMode(),
+                    Text(
+                      'Theme Settings',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(height: 12),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        FilterChip(
+                          label: const Text('System'),
+                          selected: theme.useSystemTheme,
+                          onSelected: (_) => theme.toggleSystemTheme(),
+                          avatar: Icon(
+                            Icons.brightness_auto,
+                            size: 16,
+                            color: theme.useSystemTheme
+                                ? Theme.of(context).colorScheme.onPrimary
+                                : Theme.of(context).colorScheme.onSurface,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        FilterChip(
+                          label: const Text('Light'),
+                          selected: !theme.useSystemTheme && !theme.isDark,
+                          onSelected: (_) => theme.setThemeMode(false),
+                          avatar: Icon(
+                            Icons.light_mode,
+                            size: 16,
+                            color: (!theme.useSystemTheme && !theme.isDark)
+                                ? Theme.of(context).colorScheme.onPrimary
+                                : Theme.of(context).colorScheme.onSurface,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        FilterChip(
+                          label: const Text('Dark'),
+                          selected: !theme.useSystemTheme && theme.isDark,
+                          onSelected: (_) => theme.setThemeMode(true),
+                          avatar: Icon(
+                            Icons.dark_mode,
+                            size: 16,
+                            color: (!theme.useSystemTheme && theme.isDark)
+                                ? Theme.of(context).colorScheme.onPrimary
+                                : Theme.of(context).colorScheme.onSurface,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
                     FilterChip(
                       label: const Text('High contrast'),
                       selected: theme.isHighContrast,
                       onSelected: (_) => theme.toggleHighContrast(),
+                      avatar: Icon(
+                        Icons.contrast,
+                        size: 16,
+                        color: theme.isHighContrast
+                            ? Theme.of(context).colorScheme.onPrimary
+                            : Theme.of(context).colorScheme.onSurface,
+                      ),
                     ),
                   ],
                 ),

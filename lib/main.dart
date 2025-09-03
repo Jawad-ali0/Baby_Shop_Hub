@@ -41,10 +41,14 @@ class MyApp extends StatelessWidget {
       child: Consumer<ThemeService>(
         builder: (context, theme, _) {
           final baseTheme = ThemeData(
-            brightness: theme.isDark ? Brightness.dark : Brightness.light,
+            brightness: theme.effectiveIsDark
+                ? Brightness.dark
+                : Brightness.light,
             colorScheme: ColorScheme.fromSeed(
               seedColor: const Color(0xFF6366F1),
-              brightness: theme.isDark ? Brightness.dark : Brightness.light,
+              brightness: theme.effectiveIsDark
+                  ? Brightness.dark
+                  : Brightness.light,
             ),
             useMaterial3: true,
           );
