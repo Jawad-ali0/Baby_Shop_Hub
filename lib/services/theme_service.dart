@@ -68,4 +68,17 @@ class ThemeService extends ChangeNotifier {
     await prefs.setBool(_prefKey, _isDark);
     await prefs.setBool(_systemThemeKey, false);
   }
+
+  // Reset theme to default when user logs out
+  Future<void> resetToDefault() async {
+    _isDark = false;
+    _isHighContrast = false;
+    _useSystemTheme = true;
+    notifyListeners();
+
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_prefKey, false);
+    await prefs.setBool(_highContrastKey, false);
+    await prefs.setBool(_systemThemeKey, true);
+  }
 }
