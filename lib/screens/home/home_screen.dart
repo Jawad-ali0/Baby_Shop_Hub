@@ -75,28 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  void _showLoginRequiredDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Login Required'),
-        content: const Text('Please login to customize your theme preferences.'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              Navigator.pushNamed(context, AppRouter.login);
-            },
-            child: const Text('Login'),
-          ),
-        ],
-      ),
-    );
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -115,22 +94,15 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         actions: [
-          Consumer2<ThemeService, AuthService>(
-            builder: (context, theme, auth, _) {
-              final isLoggedIn = auth.currentUser != null;
+          Consumer<ThemeService>(
+            builder: (context, theme, _) {
               return IconButton(
                 icon: Icon(
                   theme.effectiveIsDark ? Icons.light_mode : Icons.dark_mode,
-                  color: isLoggedIn 
-                      ? Theme.of(context).colorScheme.primary
-                      : Theme.of(context).colorScheme.onSurface.withOpacity(0.3),
+                  color: Theme.of(context).colorScheme.primary,
                 ),
-                onPressed: isLoggedIn 
-                    ? () => theme.toggleDarkMode()
-                    : () => _showLoginRequiredDialog(context),
-                tooltip: isLoggedIn 
-                    ? (theme.effectiveIsDark ? 'Switch to Light Mode' : 'Switch to Dark Mode')
-                    : 'Login required to change theme',
+                onPressed: () => theme.toggleDarkMode(),
+                tooltip: theme.effectiveIsDark ? 'Switch to Light Mode' : 'Switch to Dark Mode',
               );
             },
           ),

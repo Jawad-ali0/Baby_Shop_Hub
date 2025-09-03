@@ -453,11 +453,6 @@ class ProfileManagementScreen extends StatelessWidget {
             TextButton(
               onPressed: () async {
                 Navigator.of(context).pop();
-
-                // Reset theme to default before signing out
-                final themeService = context.read<ThemeService>();
-                await themeService.resetToDefault();
-
                 await auth.signOut();
                 if (context.mounted) {
                   Navigator.pushReplacementNamed(context, AppRouter.home);
