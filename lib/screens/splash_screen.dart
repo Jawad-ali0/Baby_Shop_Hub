@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
+import 'package:provider/provider.dart';
+import '../services/connectivity_service.dart';
+import '../routes/app_router.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -80,6 +83,11 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   void _startAnimations() async {
+    // Initialize connectivity service
+    if (mounted) {
+      context.read<ConnectivityService>().initialize();
+    }
+
     await Future.delayed(const Duration(milliseconds: 300));
     _backgroundController.forward();
 
@@ -88,6 +96,12 @@ class _SplashScreenState extends State<SplashScreen>
 
     await Future.delayed(const Duration(milliseconds: 400));
     _textController.forward();
+
+    // Navigate to main screen after short delay
+    await Future.delayed(const Duration(milliseconds: 1200));
+    if (mounted) {
+      Navigator.pushReplacementNamed(context, AppRouter.home);
+    }
   }
 
   @override

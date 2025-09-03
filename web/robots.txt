@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://jawad-ali0.github.io/Baby_Shop_Hub/sitemap.xml
+
+# Disallow admin areas
+Disallow: /admin/
+Disallow: /checkout/
+Disallow: /orders/
+
+# Allow product pages
+Allow: /products/
+Allow: /categories/

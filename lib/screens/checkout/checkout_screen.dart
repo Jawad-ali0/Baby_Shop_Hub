@@ -5,6 +5,8 @@ import '../../services/checkout_service.dart';
 import '../../services/cart_service.dart';
 import '../../models/user.dart';
 import '../../routes/app_router.dart';
+import '../../widgets/loading_overlay.dart';
+import '../../widgets/error_toast.dart';
 
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({super.key});
@@ -513,13 +515,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     }
 
     try {
-      // Show loading indicator
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => const Center(
-          child: CircularProgressIndicator(color: Color(0xFF6366F1)),
-        ),
+      // Show loading overlay
+      LoadingOverlayController.show(
+        context,
+        message: 'Processing your order...',
       );
 
       // Create a default payment method for COD
@@ -547,20 +546,17 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         notes: 'Order placed via mobile app',
       );
 
-      // Close loading dialog
-      Navigator.pop(context);
-
       // Clear the cart after successful order
       await cart.clearCart();
 
       // Show success message
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Order placed successfully! Order ID: $orderId'),
-            backgroundColor: const Color(0xFF10B981),
-            duration: const Duration(seconds: 3),
-          ),
+        // Hide loading overlay
+        LoadingOverlayController.hide(context);
+
+        ErrorToast.showSuccess(
+          context,
+          message: 'Order placed successfully! Order ID: $orderId',
         );
 
         // Navigate to order confirmation screen
@@ -571,18 +567,15 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         );
       }
     } catch (e) {
-      // Close loading dialog
-      if (Navigator.canPop(context)) {
-        Navigator.pop(context);
-      }
-
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error processing order: $e'),
-            backgroundColor: const Color(0xFFEF4444),
-            duration: const Duration(seconds: 4),
-          ),
+        // Hide loading overlay
+        LoadingOverlayController.hide(context);
+
+        ErrorToast.show(
+          context,
+          message: 'Failed to place order: ${e.toString()}',
+          actionText: 'Retry',
+          onAction: () => _processOrder(),
         );
       }
     }

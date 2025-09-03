@@ -6,9 +6,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:image_picker/image_picker.dart';
 import '../models/product.dart';
 
-// Web-specific imports
-import 'dart:html' as html if (dart.library.io) 'dart:io';
-
 class Base64StorageService {
   final DatabaseReference _db = FirebaseDatabase.instance.ref();
   final ImagePicker _picker = ImagePicker();
@@ -28,7 +25,7 @@ class Base64StorageService {
   Future<String?> pickImageAndConvertToBase64() async {
     try {
       if (kIsWeb) {
-        // Web implementation - simplified approach
+        // Web implementation - simplified approach using image_picker
         final XFile? image = await _picker.pickImage(
           source: ImageSource.gallery,
           maxWidth: 800,
@@ -45,7 +42,6 @@ class Base64StorageService {
           } catch (e) {
             // Fallback: try to get the path and convert
             if (image.path.isNotEmpty) {
-              // This might work on some web platforms
               final base64String = base64Encode(await image.readAsBytes());
               return 'data:image/jpeg;base64,$base64String';
             } else {
@@ -218,52 +214,6 @@ class Base64StorageService {
     }
   }
 
-  /// Web-specific method to handle file input
-  Future<String?> pickWebImageAndConvertToBase64() async {
-    if (!kIsWeb) {
-      throw Exception('This method is only available on web platform');
-    }
-
-    try {
-      // Create a file input element
-      final input = html.FileUploadInputElement();
-      input.accept = 'image/*';
-
-      // Create a completer to handle the async file reading
-      final completer = Completer<String?>();
-
-      input.onChange.listen((event) async {
-        final files = input.files;
-        if (files != null && files.isNotEmpty) {
-          final file = files.first;
-          final reader = html.FileReader();
-
-          reader.onLoad.listen((event) {
-            final result = reader.result as String;
-            completer.complete(
-              result,
-            ); // This already includes the data:image/...;base64, prefix
-          });
-
-          reader.onError.listen((event) {
-            completer.completeError('Failed to read file: $event');
-          });
-
-          reader.readAsDataUrl(file);
-        } else {
-          completer.complete(null);
-        }
-      });
-
-      // Trigger file selection
-      input.click();
-
-      return await completer.future;
-    } catch (e) {
-      throw Exception('Failed to pick web image: $e');
-    }
-  }
-
   /// Simplified web image picker using image_picker with better error handling
   Future<String?> pickWebImageSimple() async {
     if (!kIsWeb) {
@@ -289,9 +239,7 @@ class Base64StorageService {
           // If direct reading fails, try alternative approach
           print('Direct reading failed, trying alternative: $e');
 
-          // For web, sometimes we need to handle the XFile differently
           if (image.path.isNotEmpty) {
-            // This might work on some web platforms
             final bytes = await image.readAsBytes();
             final base64String = base64Encode(bytes);
             return 'data:image/jpeg;base64,$base64String';

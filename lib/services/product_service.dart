@@ -11,6 +11,8 @@ class ProductService extends ChangeNotifier {
   String? _error;
 
   List<Product> get products => _products;
+  List<Product> get activeProducts =>
+      _products.where((p) => p.isActive).toList();
   bool get isLoading => _isLoading;
   String? get error => _error;
 
@@ -210,7 +212,6 @@ class ProductService extends ChangeNotifier {
                   })
                   .where((product) => product != null)
                   .cast<Product>()
-                  .where((product) => product.isActive)
                   .toList();
 
               // Sort by creation date, newest first
@@ -270,6 +271,22 @@ class ProductService extends ChangeNotifier {
   Future<void> deleteProduct(String productId) async {
     try {
       await _db.child('products').child(productId).remove();
+
+      // Refresh products list
+      _loadProducts();
+    } catch (e) {
+      _error = e.toString();
+      notifyListeners();
+      rethrow;
+    }
+  }
+
+  Future<void> updateProductStatus(String productId, bool isActive) async {
+    try {
+      await _db.child('products').child(productId).update({
+        'isActive': isActive,
+        'updatedAt': DateTime.now().millisecondsSinceEpoch,
+      });
 
       // Refresh products list
       _loadProducts();

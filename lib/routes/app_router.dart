@@ -12,6 +12,10 @@ import '../screens/product/product_detail_screen.dart';
 import '../screens/orders/order_confirmation_screen.dart';
 // Removed demo routes to keep production build clean
 import '../models/product.dart';
+import '../screens/profile/edit_profile_screen.dart';
+import '../screens/profile/manage_addresses_screen.dart';
+import '../screens/profile/payment_methods_screen.dart';
+import '../screens/support/help_center_screen.dart';
 
 class AppRouter {
   static const String login = '/login';
@@ -26,6 +30,10 @@ class AppRouter {
   static const String productDetail = '/product-detail';
   static const String orderConfirmation = '/order-confirmation';
   // Demo routes removed
+  static const String editProfile = '/edit-profile';
+  static const String manageAddresses = '/manage-addresses';
+  static const String paymentMethods = '/payment-methods';
+  static const String helpCenter = '/help-center';
 
   static Map<String, WidgetBuilder> get routes {
     print('🔍 AppRouter: Generating routes map');
@@ -69,6 +77,10 @@ class AppRouter {
         return const CheckoutScreen();
       },
       // Demo routes removed
+      editProfile: (_) => const EditProfileScreen(),
+      manageAddresses: (_) => const ManageAddressesScreen(),
+      paymentMethods: (_) => const PaymentMethodsScreen(),
+      helpCenter: (_) => const HelpCenterScreen(),
     };
   }
 

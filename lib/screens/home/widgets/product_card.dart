@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../models/product.dart';
-import '../../../widgets/base64_image_widget.dart';
+import '../../../widgets/optimized_image_widget.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
@@ -44,36 +44,13 @@ class ProductCard extends StatelessWidget {
                   ),
                   color: Colors.grey.shade100,
                 ),
-                child: ClipRRect(
+                child: OptimizedProductImage(
+                  imageUrl: product.imageUrl,
+                  width: double.infinity,
+                  height: double.infinity,
                   borderRadius: const BorderRadius.vertical(
                     top: Radius.circular(16),
                   ),
-                  child: product.imageUrl.isNotEmpty
-                      ? (product.imageUrl.startsWith('data:image/')
-                            ? Base64ImageWidget(
-                                base64String: product.imageUrl,
-                                fit: BoxFit.cover,
-                                errorWidget: const Icon(
-                                  Icons.image,
-                                  color: Color(0xFF94A3B8),
-                                  size: 48,
-                                ),
-                              )
-                            : Image.network(
-                                product.imageUrl,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) =>
-                                    const Icon(
-                                      Icons.image,
-                                      color: Color(0xFF94A3B8),
-                                      size: 48,
-                                    ),
-                              ))
-                      : const Icon(
-                          Icons.image,
-                          color: Color(0xFF94A3B8),
-                          size: 48,
-                        ),
                 ),
               ),
             ),

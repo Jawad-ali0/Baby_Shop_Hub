@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../services/auth_service.dart';
+import '../../services/theme_service.dart';
 import '../../routes/app_router.dart';
 
 class ProfileManagementScreen extends StatelessWidget {
@@ -132,6 +133,8 @@ class ProfileManagementScreen extends StatelessWidget {
     final user = auth.userModel;
     if (user == null) return const SizedBox.shrink();
 
+    final theme = context.watch<ThemeService>();
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -179,27 +182,23 @@ class ProfileManagementScreen extends StatelessWidget {
                   user.email,
                   style: TextStyle(fontSize: 16, color: Colors.grey.shade600),
                 ),
-                if (user.role == 'admin') ...[
-                  const SizedBox(height: 12),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 6,
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    FilterChip(
+                      label: const Text('Dark mode'),
+                      selected: theme.isDark,
+                      onSelected: (_) => theme.toggleDarkMode(),
                     ),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFEF4444),
-                      borderRadius: BorderRadius.circular(20),
+                    const SizedBox(width: 8),
+                    FilterChip(
+                      label: const Text('High contrast'),
+                      selected: theme.isHighContrast,
+                      onSelected: (_) => theme.toggleHighContrast(),
                     ),
-                    child: const Text(
-                      'Admin',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ],
             ),
           ),
@@ -215,7 +214,7 @@ class ProfileManagementScreen extends StatelessWidget {
                 title: 'Edit Profile',
                 subtitle: 'Update your personal information',
                 onTap: () {
-                  // TODO: Navigate to edit profile
+                  Navigator.pushNamed(context, AppRouter.editProfile);
                 },
               ),
               _buildProfileItem(
@@ -224,7 +223,7 @@ class ProfileManagementScreen extends StatelessWidget {
                 subtitle:
                     '${user.addresses.length} address${user.addresses.length != 1 ? 'es' : ''}',
                 onTap: () {
-                  // TODO: Navigate to address management
+                  Navigator.pushNamed(context, AppRouter.manageAddresses);
                 },
               ),
               _buildProfileItem(
@@ -233,7 +232,7 @@ class ProfileManagementScreen extends StatelessWidget {
                 subtitle:
                     '${user.paymentMethods.length} payment method${user.paymentMethods.length != 1 ? 's' : ''}',
                 onTap: () {
-                  // TODO: Navigate to payment methods
+                  Navigator.pushNamed(context, AppRouter.paymentMethods);
                 },
               ),
             ],
@@ -276,7 +275,7 @@ class ProfileManagementScreen extends StatelessWidget {
                 title: 'Help Center',
                 subtitle: 'FAQs and guides',
                 onTap: () {
-                  // TODO: Navigate to help center
+                  Navigator.pushNamed(context, AppRouter.helpCenter);
                 },
               ),
             ],
