@@ -221,7 +221,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
     final products = context.watch<ProductService>().products;
     final filteredProducts = _getFilteredAndSortedProducts(products);
 
-    return Padding(
+    return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -229,20 +229,20 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
           // Title and controls section
           Row(
             children: [
-              const Text(
+              Text(
                 'Products',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF1E293B),
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
               const Spacer(),
               if (_selectedProducts.isNotEmpty) ...[
                 Text(
                   '${_selectedProducts.length} selected',
-                  style: const TextStyle(
-                    color: Color(0xFF6366F1),
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -404,123 +404,120 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
           const SizedBox(height: 16),
 
           // Products list
-          Expanded(
-            child: filteredProducts.isEmpty
-                ? const Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.inventory_2_outlined,
-                          size: 64,
-                          color: Color(0xFF94A3B8),
-                        ),
-                        SizedBox(height: 16),
-                        Text(
-                          'No products found',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Color(0xFF64748B),
-                          ),
-                        ),
-                        SizedBox(height: 8),
-                        Text(
-                          'Try adjusting your filters or add a new product',
-                          style: TextStyle(color: Color(0xFF94A3B8)),
-                        ),
-                      ],
-                    ),
-                  )
-                : ListView.builder(
-                    itemCount: filteredProducts.length,
-                    itemBuilder: (context, index) {
-                      final product = filteredProducts[index];
-                      final isSelected = _selectedProducts.contains(product.id);
-
-                      return Card(
-                        margin: const EdgeInsets.only(bottom: 8),
-                        child: CheckboxListTile(
-                          value: isSelected,
-                          onChanged: (value) {
-                            setState(() {
-                              if (value == true) {
-                                _selectedProducts.add(product.id);
-                              } else {
-                                _selectedProducts.remove(product.id);
-                              }
-                            });
-                          },
-                          title: Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  product.name,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 4,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: product.isActive
-                                      ? const Color(0xFF10B981)
-                                      : const Color(0xFF6B7280),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Text(
-                                  product.isActive ? 'Active' : 'Inactive',
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SizedBox(height: 4),
-                              Text(
-                                'Price: \$${product.price.toStringAsFixed(2)}',
-                              ),
-                              Text('Stock: ${product.stock} units'),
-                              if (product.stock == 0)
-                                const Text(
-                                  'OUT OF STOCK',
-                                  style: TextStyle(
-                                    color: Color(0xFFEF4444),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                            ],
-                          ),
-                          secondary: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                onPressed: () => _editProduct(product),
-                                icon: const Icon(Icons.edit),
-                                tooltip: 'Edit Product',
-                              ),
-                              IconButton(
-                                onPressed: () => _deleteProduct(product),
-                                icon: const Icon(Icons.delete),
-                                tooltip: 'Delete Product',
-                                color: const Color(0xFFEF4444),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
+          if (filteredProducts.isEmpty)
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.inventory_2_outlined,
+                    size: 64,
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withOpacity(0.5),
                   ),
-          ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'No products found',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Try adjusting your filters or add a new product',
+                    style: TextStyle(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withOpacity(0.7),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          else
+            ...filteredProducts.map((product) {
+              final isSelected = _selectedProducts.contains(product.id);
+
+              return Card(
+                margin: const EdgeInsets.only(bottom: 8),
+                child: CheckboxListTile(
+                  value: isSelected,
+                  onChanged: (value) {
+                    setState(() {
+                      if (value == true) {
+                        _selectedProducts.add(product.id);
+                      } else {
+                        _selectedProducts.remove(product.id);
+                      }
+                    });
+                  },
+                  title: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          product.name,
+                          style: const TextStyle(fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: product.isActive
+                              ? const Color(0xFF10B981)
+                              : const Color(0xFF6B7280),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          product.isActive ? 'Active' : 'Inactive',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 4),
+                      Text('Price: \$${product.price.toStringAsFixed(2)}'),
+                      Text('Stock: ${product.stock} units'),
+                      if (product.stock == 0)
+                        const Text(
+                          'OUT OF STOCK',
+                          style: TextStyle(
+                            color: Color(0xFFEF4444),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                    ],
+                  ),
+                  secondary: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        onPressed: () => _editProduct(product),
+                        icon: const Icon(Icons.edit),
+                        tooltip: 'Edit Product',
+                      ),
+                      IconButton(
+                        onPressed: () => _deleteProduct(product),
+                        icon: const Icon(Icons.delete),
+                        tooltip: 'Delete Product',
+                        color: const Color(0xFFEF4444),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }).toList(),
         ],
       ),
     );
