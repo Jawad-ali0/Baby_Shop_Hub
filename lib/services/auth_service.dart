@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import '../models/user.dart';
 import 'cart_service.dart';
 import 'order_service.dart';
-import 'theme_service.dart';
 
 class AuthService extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
