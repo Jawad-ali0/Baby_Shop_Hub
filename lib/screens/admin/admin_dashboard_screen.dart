@@ -281,93 +281,103 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
           const SizedBox(height: 16),
 
           // Filter and sort controls
-          Row(
-            children: [
-              Expanded(
-                child: DropdownButtonFormField<String>(
-                  initialValue: _productFilter,
-                  decoration: const InputDecoration(
-                    labelText: 'Filter',
-                    border: OutlineInputBorder(),
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 8,
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 200,
+                  child: DropdownButtonFormField<String>(
+                    initialValue: _productFilter,
+                    decoration: const InputDecoration(
+                      labelText: 'Filter',
+                      border: OutlineInputBorder(),
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 8,
+                      ),
                     ),
+                    items: const [
+                      DropdownMenuItem(
+                        value: 'all',
+                        child: Text('All Products'),
+                      ),
+                      DropdownMenuItem(
+                        value: 'active',
+                        child: Text('Active Only'),
+                      ),
+                      DropdownMenuItem(
+                        value: 'inactive',
+                        child: Text('Inactive Only'),
+                      ),
+                      DropdownMenuItem(
+                        value: 'out_of_stock',
+                        child: Text('Out of Stock'),
+                      ),
+                    ],
+                    onChanged: (value) =>
+                        setState(() => _productFilter = value!),
                   ),
-                  items: const [
-                    DropdownMenuItem(value: 'all', child: Text('All Products')),
-                    DropdownMenuItem(
-                      value: 'active',
-                      child: Text('Active Only'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'inactive',
-                      child: Text('Inactive Only'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'out_of_stock',
-                      child: Text('Out of Stock'),
-                    ),
-                  ],
-                  onChanged: (value) => setState(() => _productFilter = value!),
                 ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: DropdownButtonFormField<String>(
-                  initialValue: _productSortBy,
-                  decoration: const InputDecoration(
-                    labelText: 'Sort By',
-                    border: OutlineInputBorder(),
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 8,
+                const SizedBox(width: 12),
+                SizedBox(
+                  width: 200,
+                  child: DropdownButtonFormField<String>(
+                    initialValue: _productSortBy,
+                    decoration: const InputDecoration(
+                      labelText: 'Sort By',
+                      border: OutlineInputBorder(),
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 8,
+                      ),
                     ),
+                    items: const [
+                      DropdownMenuItem(value: 'name', child: Text('Name A-Z')),
+                      DropdownMenuItem(
+                        value: 'name_desc',
+                        child: Text('Name Z-A'),
+                      ),
+                      DropdownMenuItem(
+                        value: 'price',
+                        child: Text('Price Low-High'),
+                      ),
+                      DropdownMenuItem(
+                        value: 'price_desc',
+                        child: Text('Price High-Low'),
+                      ),
+                      DropdownMenuItem(
+                        value: 'stock',
+                        child: Text('Stock Low-High'),
+                      ),
+                      DropdownMenuItem(
+                        value: 'created',
+                        child: Text('Newest First'),
+                      ),
+                    ],
+                    onChanged: (value) =>
+                        setState(() => _productSortBy = value!),
                   ),
-                  items: const [
-                    DropdownMenuItem(value: 'name', child: Text('Name A-Z')),
-                    DropdownMenuItem(
-                      value: 'name_desc',
-                      child: Text('Name Z-A'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'price',
-                      child: Text('Price Low-High'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'price_desc',
-                      child: Text('Price High-Low'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'stock',
-                      child: Text('Stock Low-High'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'created',
-                      child: Text('Newest First'),
-                    ),
-                  ],
-                  onChanged: (value) => setState(() => _productSortBy = value!),
                 ),
-              ),
-              const SizedBox(width: 12),
-              ElevatedButton.icon(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const Base64ProductFormScreen(),
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.add),
-                label: const Text('Add Product'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF10B981),
-                  foregroundColor: Colors.white,
+                const SizedBox(width: 12),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const Base64ProductFormScreen(),
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.add),
+                  label: const Text('Add Product'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF10B981),
+                    foregroundColor: Colors.white,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           const SizedBox(height: 16),
 
