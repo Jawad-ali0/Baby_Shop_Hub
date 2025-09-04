@@ -354,7 +354,7 @@ class _ManageAddressesScreenState extends State<ManageAddressesScreen> {
                   leading: CircleAvatar(
                     backgroundColor: address.isDefault
                         ? Theme.of(context).colorScheme.primary
-                        : Theme.of(context).colorScheme.surfaceVariant,
+                        : Theme.of(context).colorScheme.surfaceContainerHighest,
                     child: Icon(
                       address.isDefault ? Icons.star : Icons.location_on,
                       color: address.isDefault

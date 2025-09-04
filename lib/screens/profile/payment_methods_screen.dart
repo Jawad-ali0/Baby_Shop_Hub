@@ -80,7 +80,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
               children: [
                 // Card Type Selection
                 DropdownButtonFormField<String>(
-                  value: _selectedCardType,
+                  initialValue: _selectedCardType,
                   decoration: const InputDecoration(
                     labelText: 'Card Type',
                     border: OutlineInputBorder(),
@@ -158,7 +158,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
                     // Expiry Month
                     Expanded(
                       child: DropdownButtonFormField<String>(
-                        value: _expiryMonthController.text.isEmpty ? null : _expiryMonthController.text,
+                        initialValue: _expiryMonthController.text.isEmpty ? null : _expiryMonthController.text,
                         decoration: const InputDecoration(
                           labelText: 'Month',
                           border: OutlineInputBorder(),
@@ -184,7 +184,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
                     // Expiry Year
                     Expanded(
                       child: DropdownButtonFormField<String>(
-                        value: _expiryYearController.text.isEmpty ? null : _expiryYearController.text,
+                        initialValue: _expiryYearController.text.isEmpty ? null : _expiryYearController.text,
                         decoration: const InputDecoration(
                           labelText: 'Year',
                           border: OutlineInputBorder(),
@@ -464,7 +464,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
                   leading: CircleAvatar(
                     backgroundColor: paymentMethod.isDefault
                         ? Theme.of(context).colorScheme.primary
-                        : Theme.of(context).colorScheme.surfaceVariant,
+                        : Theme.of(context).colorScheme.surfaceContainerHighest,
                     child: Icon(
                       paymentMethod.isDefault ? Icons.star : _getCardIcon(paymentMethod.type).icon,
                       color: paymentMethod.isDefault
