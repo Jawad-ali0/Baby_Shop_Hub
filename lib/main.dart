@@ -55,12 +55,14 @@ class MyApp extends StatelessWidget {
           final themed = theme.isHighContrast
               ? baseTheme.copyWith(
                   textTheme: baseTheme.textTheme.apply(
-                    bodyColor: Colors.black,
-                    displayColor: Colors.black,
+                    bodyColor: theme.effectiveIsDark ? Colors.white : Colors.black,
+                    displayColor: theme.effectiveIsDark ? Colors.white : Colors.black,
                   ),
                   colorScheme: baseTheme.colorScheme.copyWith(
-                    primary: const Color(0xFF000000),
-                    secondary: const Color(0xFF000000),
+                    primary: theme.effectiveIsDark ? Colors.white : Colors.black,
+                    secondary: theme.effectiveIsDark ? Colors.white : Colors.black,
+                    onSurface: theme.effectiveIsDark ? Colors.white : Colors.black,
+                    onBackground: theme.effectiveIsDark ? Colors.white : Colors.black,
                   ),
                 )
               : baseTheme;

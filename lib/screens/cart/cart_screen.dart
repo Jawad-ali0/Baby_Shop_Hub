@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../services/cart_service.dart';
 import '../../routes/app_router.dart';
 import '../../services/auth_service.dart';
+import '../../widgets/optimized_image_widget.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
@@ -12,16 +13,16 @@ class CartScreen extends StatelessWidget {
     final cart = context.watch<CartService>();
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC),
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Shopping Cart',
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: Color(0xFF1E293B),
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         surfaceTintColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
@@ -101,11 +102,11 @@ class CartScreen extends StatelessWidget {
         final item = cart.items[i];
         return Container(
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.05),
+                color: Theme.of(context).colorScheme.shadow.withValues(alpha: 0.1),
                 blurRadius: 10,
                 offset: const Offset(0, 4),
               ),
@@ -124,17 +125,11 @@ class CartScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: item.productImage.isNotEmpty
-                      ? ClipRRect(
+                      ? OptimizedProductImage(
+                          imageUrl: item.productImage,
+                          width: 80,
+                          height: 80,
                           borderRadius: BorderRadius.circular(12),
-                          child: Image.network(
-                            item.productImage,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) =>
-                                const Icon(
-                                  Icons.image,
-                                  color: Color(0xFF94A3B8),
-                                ),
-                          ),
                         )
                       : const Icon(Icons.image, color: Color(0xFF94A3B8)),
                 ),
@@ -147,10 +142,10 @@ class CartScreen extends StatelessWidget {
                     children: [
                       Text(
                         item.productName,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
-                          color: Color(0xFF1E293B),
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
