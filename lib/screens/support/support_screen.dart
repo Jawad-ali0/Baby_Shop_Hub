@@ -299,15 +299,20 @@ class _SupportScreenState extends State<SupportScreen> {
                   const SizedBox(height: 16),
                   Row(
                     children: [
-                      Flexible(
+                      Expanded(
+                        flex: 1,
                         child: DropdownButtonFormField<String>(
                           initialValue: selectedCategory,
                           decoration: InputDecoration(
                             labelText: 'Category',
                             isDense: true,
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 8,
+                            ),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
-                                Radius.circular(12),
+                                Radius.circular(8),
                               ),
                             ),
                             filled: true,
@@ -323,6 +328,7 @@ class _SupportScreenState extends State<SupportScreen> {
                                   child: Text(
                                     category.toUpperCase(),
                                     overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(fontSize: 12),
                                   ),
                                 ),
                               )
@@ -330,16 +336,21 @@ class _SupportScreenState extends State<SupportScreen> {
                           onChanged: (value) => selectedCategory = value!,
                         ),
                       ),
-                      const SizedBox(width: 8),
-                      Flexible(
+                      const SizedBox(width: 4),
+                      Expanded(
+                        flex: 1,
                         child: DropdownButtonFormField<String>(
                           initialValue: selectedPriority,
                           decoration: InputDecoration(
                             labelText: 'Priority',
                             isDense: true,
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 8,
+                            ),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
-                                Radius.circular(12),
+                                Radius.circular(8),
                               ),
                             ),
                             filled: true,
@@ -355,6 +366,7 @@ class _SupportScreenState extends State<SupportScreen> {
                                   child: Text(
                                     priority.toUpperCase(),
                                     overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(fontSize: 12),
                                   ),
                                 ),
                               )
