@@ -30,9 +30,10 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
     super.initState();
     _tabController = TabController(length: 4, vsync: this);
 
-    // Load all orders for admin view
+    // Load all orders and products for admin view
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<OrderService>().loadAllOrders();
+      context.read<ProductService>().initialize();
     });
   }
 
@@ -221,8 +222,63 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
   }
 
   Widget _buildProductsTab() {
-    final products = context.watch<ProductService>().products;
+    final productService = context.watch<ProductService>();
+    final products = productService.products;
+    final isLoading = productService.isLoading;
+    final error = productService.error;
     final filteredProducts = _getFilteredAndSortedProducts(products);
+
+    // Show loading state
+    if (isLoading) {
+      return const Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(height: 16),
+            Text('Loading products...'),
+          ],
+        ),
+      );
+    }
+
+    // Show error state
+    if (error != null) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.error_outline,
+              size: 64,
+              color: Colors.red.shade400,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Error loading products',
+              style: TextStyle(
+                fontSize: 18,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              error,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton.icon(
+              onPressed: () => productService.initialize(),
+              icon: const Icon(Icons.refresh),
+              label: const Text('Retry'),
+            ),
+          ],
+        ),
+      );
+    }
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
