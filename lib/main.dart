@@ -72,9 +72,6 @@ class MyApp extends StatelessWidget {
                     onSurface: theme.effectiveIsDark
                         ? Colors.white
                         : Colors.black,
-                    onBackground: theme.effectiveIsDark
-                        ? Colors.white
-                        : Colors.black,
                   ),
                 )
               : baseTheme;

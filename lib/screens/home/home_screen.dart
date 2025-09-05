@@ -75,8 +75,6 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,7 +100,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: Theme.of(context).colorScheme.primary,
                 ),
                 onPressed: () => theme.toggleDarkMode(),
-                tooltip: theme.effectiveIsDark ? 'Switch to Light Mode' : 'Switch to Dark Mode',
+                tooltip: theme.effectiveIsDark
+                    ? 'Switch to Light Mode'
+                    : 'Switch to Dark Mode',
               );
             },
           ),
@@ -129,7 +129,9 @@ class _HomeScreenState extends State<HomeScreen> {
               borderRadius: BorderRadius.circular(12),
               boxShadow: [
                 BoxShadow(
-                  color: Theme.of(context).colorScheme.shadow.withValues(alpha:0.05),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.shadow.withValues(alpha: 0.05),
                   blurRadius: 10,
                   offset: const Offset(0, 2),
                 ),
@@ -289,7 +291,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
-                          childAspectRatio: 0.75,
+                          childAspectRatio: 0.65,
                           crossAxisSpacing: 16,
                           mainAxisSpacing: 16,
                         ),
