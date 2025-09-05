@@ -184,11 +184,11 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: Theme.of(context).colorScheme.shadow.withOpacity(0.1),
             blurRadius: 20,
             offset: const Offset(0, 8),
           ),
@@ -210,7 +210,10 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
           const SizedBox(height: 4),
           Text(
             title,
-            style: const TextStyle(fontSize: 14, color: Color(0xFF64748B)),
+            style: TextStyle(
+              fontSize: 14,
+              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+            ),
           ),
         ],
       ),
@@ -304,7 +307,8 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                       ),
                       const SizedBox(width: 8),
                       TextButton(
-                        onPressed: () => setState(() => _selectedProducts.clear()),
+                        onPressed: () =>
+                            setState(() => _selectedProducts.clear()),
                         child: const Text('Clear'),
                       ),
                     ],
@@ -316,141 +320,150 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
           const SizedBox(height: 16),
 
           // Filter and sort controls
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-            children: [
-                SizedBox(
-                  width: 200,
-                child: DropdownButtonFormField<String>(
-                  initialValue: _productFilter,
-                  decoration: const InputDecoration(
-                    labelText: 'Filter',
-                    border: OutlineInputBorder(),
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 8,
-                    ),
-                  ),
-                  items: const [
-                      DropdownMenuItem(
-                        value: 'all',
-                        child: Text('All Products'),
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 200,
+                    child: DropdownButtonFormField<String>(
+                      value: _productFilter,
+                      decoration: const InputDecoration(
+                        labelText: 'Filter',
+                        border: OutlineInputBorder(),
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 8,
+                        ),
                       ),
-                    DropdownMenuItem(
-                      value: 'active',
-                      child: Text('Active Only'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'inactive',
-                      child: Text('Inactive Only'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'out_of_stock',
-                      child: Text('Out of Stock'),
-                    ),
-                  ],
-                    onChanged: (value) =>
-                        setState(() => _productFilter = value!),
-                ),
-              ),
-              const SizedBox(width: 12),
-                SizedBox(
-                  width: 200,
-                child: DropdownButtonFormField<String>(
-                  initialValue: _productSortBy,
-                  decoration: const InputDecoration(
-                    labelText: 'Sort By',
-                    border: OutlineInputBorder(),
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 8,
+                      items: const [
+                        DropdownMenuItem(
+                          value: 'all',
+                          child: Text('All Products'),
+                        ),
+                        DropdownMenuItem(
+                          value: 'active',
+                          child: Text('Active Only'),
+                        ),
+                        DropdownMenuItem(
+                          value: 'inactive',
+                          child: Text('Inactive Only'),
+                        ),
+                        DropdownMenuItem(
+                          value: 'out_of_stock',
+                          child: Text('Out of Stock'),
+                        ),
+                      ],
+                      onChanged: (value) =>
+                          setState(() => _productFilter = value!),
                     ),
                   ),
-                  items: const [
-                    DropdownMenuItem(value: 'name', child: Text('Name A-Z')),
-                    DropdownMenuItem(
-                      value: 'name_desc',
-                      child: Text('Name Z-A'),
+                  const SizedBox(width: 12),
+                  SizedBox(
+                    width: 200,
+                    child: DropdownButtonFormField<String>(
+                      value: _productSortBy,
+                      decoration: const InputDecoration(
+                        labelText: 'Sort By',
+                        border: OutlineInputBorder(),
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 8,
+                        ),
+                      ),
+                      items: const [
+                        DropdownMenuItem(
+                          value: 'name',
+                          child: Text('Name A-Z'),
+                        ),
+                        DropdownMenuItem(
+                          value: 'name_desc',
+                          child: Text('Name Z-A'),
+                        ),
+                        DropdownMenuItem(
+                          value: 'price',
+                          child: Text('Price Low-High'),
+                        ),
+                        DropdownMenuItem(
+                          value: 'price_desc',
+                          child: Text('Price High-Low'),
+                        ),
+                        DropdownMenuItem(
+                          value: 'stock',
+                          child: Text('Stock Low-High'),
+                        ),
+                        DropdownMenuItem(
+                          value: 'created',
+                          child: Text('Newest First'),
+                        ),
+                      ],
+                      onChanged: (value) =>
+                          setState(() => _productSortBy = value!),
                     ),
-                    DropdownMenuItem(
-                      value: 'price',
-                      child: Text('Price Low-High'),
+                  ),
+                  const SizedBox(width: 12),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const Base64ProductFormScreen(),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.add),
+                    label: const Text('Add Product'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF10B981),
+                      foregroundColor: Colors.white,
                     ),
-                    DropdownMenuItem(
-                      value: 'price_desc',
-                      child: Text('Price High-Low'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'stock',
-                      child: Text('Stock Low-High'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'created',
-                      child: Text('Newest First'),
-                    ),
-                  ],
-                    onChanged: (value) =>
-                        setState(() => _productSortBy = value!),
-                ),
+                  ),
+                ],
               ),
-              const SizedBox(width: 12),
-              ElevatedButton.icon(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const Base64ProductFormScreen(),
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.add),
-                label: const Text('Add Product'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF10B981),
-                  foregroundColor: Colors.white,
-                ),
-              ),
-            ],
             ),
           ),
           const SizedBox(height: 16),
 
           // Products list
-          if (filteredProducts.isEmpty)
-            Center(
+          Expanded(
+            child: filteredProducts.isEmpty
+                ? Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
                           Icons.inventory_2_outlined,
                           size: 64,
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.onSurface.withOpacity(0.5),
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onSurface.withOpacity(0.5),
                         ),
-                  const SizedBox(height: 16),
+                        const SizedBox(height: 16),
                         Text(
                           'No products found',
                           style: TextStyle(
                             fontSize: 18,
-                      color: Theme.of(context).colorScheme.onSurface,
+                            color: Theme.of(context).colorScheme.onSurface,
                           ),
                         ),
-                  const SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         Text(
                           'Try adjusting your filters or add a new product',
-                    style: TextStyle(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.onSurface.withOpacity(0.7),
-                    ),
+                          style: TextStyle(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurface.withOpacity(0.7),
+                          ),
                         ),
                       ],
                     ),
                   )
-          else
-            ...filteredProducts.map((product) {
+                : ListView.builder(
+                    itemCount: filteredProducts.length,
+                    itemBuilder: (context, index) {
+                      final product = filteredProducts[index];
                       final isSelected = _selectedProducts.contains(product.id);
 
                       return Card(
@@ -471,7 +484,9 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                               Expanded(
                                 child: Text(
                                   product.name,
-                          style: const TextStyle(fontWeight: FontWeight.w600),
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                               ),
                               Container(
@@ -487,7 +502,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                                 ),
                                 child: Text(
                                   product.isActive ? 'Active' : 'Inactive',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 12,
                                     fontWeight: FontWeight.w500,
@@ -500,7 +515,9 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const SizedBox(height: 4),
-                      Text('Price: \$${product.price.toStringAsFixed(2)}'),
+                              Text(
+                                'Price: \$${product.price.toStringAsFixed(2)}',
+                              ),
                               Text('Stock: ${product.stock} units'),
                               if (product.stock == 0)
                                 const Text(
@@ -530,7 +547,9 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                           ),
                         ),
                       );
-            }),
+                    },
+                  ),
+          ),
         ],
       ),
     );
@@ -746,12 +765,12 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Orders',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: Color(0xFF1E293B),
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
           const SizedBox(height: 16),
@@ -763,11 +782,13 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                 return Container(
                   margin: const EdgeInsets.only(bottom: 12),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.surface,
                     borderRadius: BorderRadius.circular(12),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.05),
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.shadow.withOpacity(0.1),
                         blurRadius: 10,
                         offset: const Offset(0, 4),
                       ),
@@ -778,19 +799,23 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                       backgroundColor: _getOrderStatusColor(order.status),
                       child: Icon(
                         _getOrderStatusIcon(order.status),
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.surface,
                       ),
                     ),
                     title: Text(
                       'Order #${order.id.substring(order.id.length - 6)}',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontWeight: FontWeight.w600,
-                        color: Color(0xFF1E293B),
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
                     subtitle: Text(
                       '${order.items.length} items • Rs. ${order.totalAmount.toStringAsFixed(2)}\nStatus: ${order.status}',
-                      style: const TextStyle(color: Color(0xFF64748B)),
+                      style: TextStyle(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSurface.withOpacity(0.7),
+                      ),
                     ),
                     isThreeLine: true,
                     trailing: PopupMenuButton<String>(
@@ -833,9 +858,11 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                         children: [
                           Text(
                             order.createdAt.toLocal().toString().split('.')[0],
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 12,
-                              color: Color(0xFF94A3B8),
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurface.withOpacity(0.5),
                             ),
                           ),
                           if (order.trackingNumber != null)
@@ -867,12 +894,12 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Support Tickets',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: Color(0xFF1E293B),
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
           const SizedBox(height: 16),
@@ -884,11 +911,13 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                 return Container(
                   margin: const EdgeInsets.only(bottom: 12),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.surface,
                     borderRadius: BorderRadius.circular(12),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.05),
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.shadow.withOpacity(0.1),
                         blurRadius: 10,
                         offset: const Offset(0, 4),
                       ),
@@ -899,21 +928,25 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                       backgroundColor: _getTicketStatusColor(ticket.status),
                       child: Icon(
                         _getTicketStatusIcon(ticket.status),
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.surface,
                       ),
                     ),
                     title: Text(
                       ticket.subject,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontWeight: FontWeight.w600,
-                        color: Color(0xFF1E293B),
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
                     subtitle: Text(
                       ticket.description,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(color: Color(0xFF64748B)),
+                      style: TextStyle(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSurface.withOpacity(0.7),
+                      ),
                     ),
                     trailing: Text(
                       ticket.status.name.toUpperCase(),

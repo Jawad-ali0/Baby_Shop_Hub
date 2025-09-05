@@ -41,9 +41,11 @@ class ThemeService extends ChangeNotifier {
 
   Future<void> toggleDarkMode() async {
     _isDark = !_isDark;
+    _useSystemTheme = false; // Disable system theme when manually toggling
     notifyListeners();
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_prefKey, _isDark);
+    await prefs.setBool(_systemThemeKey, false);
   }
 
   Future<void> toggleHighContrast() async {

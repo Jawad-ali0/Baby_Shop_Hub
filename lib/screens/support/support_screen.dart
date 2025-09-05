@@ -24,15 +24,15 @@ class _SupportScreenState extends State<SupportScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC),
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         surfaceTintColor: Colors.transparent,
         elevation: 0,
-        title: const Text(
+        title: Text(
           'Support',
           style: TextStyle(
-            color: Color(0xFF1E293B),
+            color: Theme.of(context).colorScheme.onSurface,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -44,7 +44,7 @@ class _SupportScreenState extends State<SupportScreen> {
               borderRadius: BorderRadius.circular(12),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.1),
+                  color: Theme.of(context).colorScheme.shadow.withValues(alpha: 0.1),
                   blurRadius: 10,
                   offset: const Offset(0, 4),
                 ),
@@ -73,11 +73,13 @@ class _SupportScreenState extends State<SupportScreen> {
               return Container(
                 margin: const EdgeInsets.only(bottom: 12),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.surface,
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.05),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.shadow.withValues(alpha: 0.1),
                       blurRadius: 20,
                       offset: const Offset(0, 8),
                     ),
@@ -94,15 +96,17 @@ class _SupportScreenState extends State<SupportScreen> {
                   ),
                   title: Text(
                     ticket.subject,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.w600,
-                      color: Color(0xFF1E293B),
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
                   subtitle: Text(
                     '${ticket.category} • ${ticket.priority.name} priority',
-                    style: const TextStyle(
-                      color: Color(0xFF64748B),
+                    style: TextStyle(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withValues(alpha: 0.7),
                       fontSize: 12,
                     ),
                   ),
@@ -114,8 +118,10 @@ class _SupportScreenState extends State<SupportScreen> {
                         children: [
                           Text(
                             ticket.description,
-                            style: const TextStyle(
-                              color: Color(0xFF64748B),
+                            style: TextStyle(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurface.withValues(alpha: 0.7),
                               height: 1.5,
                             ),
                           ),
@@ -144,7 +150,9 @@ class _SupportScreenState extends State<SupportScreen> {
                               Text(
                                 _formatDate(ticket.createdAt),
                                 style: TextStyle(
-                                  color: Colors.grey.shade500,
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurface.withValues(alpha: 0.5),
                                   fontSize: 12,
                                 ),
                               ),
@@ -181,18 +189,21 @@ class _SupportScreenState extends State<SupportScreen> {
             ),
           ),
           const SizedBox(height: 24),
-          const Text(
+          Text(
             'No support tickets yet',
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
-              color: Color(0xFF1E293B),
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
           const SizedBox(height: 8),
           Text(
             'Create a support ticket if you need help',
-            style: TextStyle(color: Colors.grey.shade600, fontSize: 16),
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+              fontSize: 16,
+            ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 24),
@@ -224,115 +235,133 @@ class _SupportScreenState extends State<SupportScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        title: Text(
           'Create Support Ticket',
           style: TextStyle(
-            color: Color(0xFF1E293B),
+            color: Theme.of(context).colorScheme.onSurface,
             fontWeight: FontWeight.bold,
           ),
         ),
-        content: Form(
-          key: formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextFormField(
-                  controller: subjectController,
-                  decoration: const InputDecoration(
-                    labelText: 'Subject',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
-                    ),
-                    filled: true,
-                    fillColor: Color(0xFFF8FAFC),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return 'Please enter a subject';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: descriptionController,
-                  maxLines: 3,
-                  decoration: const InputDecoration(
-                    labelText: 'Description',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
-                    ),
-                    filled: true,
-                    fillColor: Color(0xFFF8FAFC),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return 'Please enter a description';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 16),
-                Row(
-                  children: [
-                    Expanded(
-                      child: DropdownButtonFormField<String>(
-                        initialValue: selectedCategory,
-                        decoration: const InputDecoration(
-                          labelText: 'Category',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(12)),
-                          ),
-                          filled: true,
-                          fillColor: Color(0xFFF8FAFC),
-                        ),
-                        items: ['general', 'technical', 'billing', 'order']
-                            .map(
-                              (category) => DropdownMenuItem(
-                                value: category,
-                                child: Text(category.toUpperCase()),
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (value) => selectedCategory = value!,
+        content: SizedBox(
+          width: MediaQuery.of(context).size.width * 0.9,
+          child: Form(
+            key: formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextFormField(
+                    controller: subjectController,
+                    decoration: InputDecoration(
+                      labelText: 'Subject',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
                       ),
+                      filled: true,
+                      fillColor: Theme.of(
+                        context,
+                      ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
                     ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: DropdownButtonFormField<String>(
-                        initialValue: selectedPriority,
-                        decoration: const InputDecoration(
-                          labelText: 'Priority',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(12)),
-                          ),
-                          filled: true,
-                          fillColor: Color(0xFFF8FAFC),
-                        ),
-                        items: ['low', 'medium', 'high', 'urgent']
-                            .map(
-                              (priority) => DropdownMenuItem(
-                                value: priority,
-                                child: Text(priority.toUpperCase()),
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (value) => selectedPriority = value!,
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return 'Please enter a subject';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: descriptionController,
+                    maxLines: 3,
+                    decoration: InputDecoration(
+                      labelText: 'Description',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
                       ),
+                      filled: true,
+                      fillColor: Theme.of(
+                        context,
+                      ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
                     ),
-                  ],
-                ),
-              ],
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return 'Please enter a description';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: DropdownButtonFormField<String>(
+                          initialValue: selectedCategory,
+                          decoration: InputDecoration(
+                            labelText: 'Category',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(12),
+                              ),
+                            ),
+                            filled: true,
+                            fillColor: Theme.of(
+                              context,
+                            ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+                          ),
+                          items: ['general', 'technical', 'billing', 'order']
+                              .map(
+                                (category) => DropdownMenuItem(
+                                  value: category,
+                                  child: Text(category.toUpperCase()),
+                                ),
+                              )
+                              .toList(),
+                          onChanged: (value) => selectedCategory = value!,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: DropdownButtonFormField<String>(
+                          initialValue: selectedPriority,
+                          decoration: InputDecoration(
+                            labelText: 'Priority',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(12),
+                              ),
+                            ),
+                            filled: true,
+                            fillColor: Theme.of(
+                              context,
+                            ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+                          ),
+                          items: ['low', 'medium', 'high', 'urgent']
+                              .map(
+                                (priority) => DropdownMenuItem(
+                                  value: priority,
+                                  child: Text(priority.toUpperCase()),
+                                ),
+                              )
+                              .toList(),
+                          onChanged: (value) => selectedPriority = value!,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text(
+            child: Text(
               'Cancel',
-              style: TextStyle(color: Color(0xFF64748B)),
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+              ),
             ),
           ),
           ElevatedButton(
