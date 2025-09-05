@@ -1,9 +1,9 @@
 import 'dart:async';
+import 'dart:io';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:io';
-import 'dart:convert';
 
 class StorageService extends ChangeNotifier {
   final FirebaseStorage _storage = FirebaseStorage.instance;

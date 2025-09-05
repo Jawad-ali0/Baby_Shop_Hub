@@ -1,7 +1,7 @@
-import 'dart:convert';
 import 'dart:io';
+import 'dart:convert';
 import 'dart:async';
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show kIsWeb, debugPrint;
 import 'package:firebase_database/firebase_database.dart';
 import 'package:image_picker/image_picker.dart';
 import '../models/product.dart';
@@ -38,12 +38,12 @@ class Base64StorageService {
             // For web, read bytes directly from XFile
             final bytes = await image.readAsBytes();
             final base64String = base64Encode(bytes);
-            return 'data:image/jpeg;base64,$base64String';
+            return 'data:image/jpeg,$base64String';
           } catch (e) {
             // Fallback: try to get the path and convert
             if (image.path.isNotEmpty) {
               final base64String = base64Encode(await image.readAsBytes());
-              return 'data:image/jpeg;base64,$base64String';
+              return 'data:image/jpeg,$base64String';
             } else {
               throw Exception('Unable to read image data on web platform');
             }
@@ -134,7 +134,7 @@ class Base64StorageService {
       productData.removeWhere((key, value) => value == null);
 
       await _db.child('products').child(productId).set(productData);
-      debugPrint('✅ Product stored with Base64 image: $name');
+      debugPrint('✅ Product stored with: $name');
     } catch (e) {
       throw Exception('Failed to store product: $e');
     }
