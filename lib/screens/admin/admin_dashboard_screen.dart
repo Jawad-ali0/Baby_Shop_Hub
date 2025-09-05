@@ -86,7 +86,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
           labelColor: Theme.of(context).colorScheme.primary,
           unselectedLabelColor: Theme.of(
             context,
-          ).colorScheme.onSurface.withOpacity(0.6),
+          ).colorScheme.onSurface.withValues(alpha:0.6),
           tabs: const [
             Tab(text: 'Overview'),
             Tab(text: 'Products'),
@@ -188,7 +188,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Theme.of(context).colorScheme.shadow.withOpacity(0.1),
+            color: Theme.of(context).colorScheme.shadow.withValues(alpha:0.1),
             blurRadius: 20,
             offset: const Offset(0, 8),
           ),
@@ -212,7 +212,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
             title,
             style: TextStyle(
               fontSize: 14,
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+              color: Theme.of(context).colorScheme.onSurface.withValues(alpha:0.7),
             ),
           ),
         ],
@@ -329,7 +329,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                   SizedBox(
                     width: 200,
                     child: DropdownButtonFormField<String>(
-                      value: _productFilter,
+                      initialValue: _productFilter,
                       decoration: const InputDecoration(
                         labelText: 'Filter',
                         border: OutlineInputBorder(),
@@ -364,7 +364,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                   SizedBox(
                     width: 200,
                     child: DropdownButtonFormField<String>(
-                      value: _productSortBy,
+                      initialValue: _productSortBy,
                       decoration: const InputDecoration(
                         labelText: 'Sort By',
                         border: OutlineInputBorder(),
@@ -438,7 +438,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                           size: 64,
                           color: Theme.of(
                             context,
-                          ).colorScheme.onSurface.withOpacity(0.5),
+                          ).colorScheme.onSurface.withValues(alpha:0.5),
                         ),
                         const SizedBox(height: 16),
                         Text(
@@ -454,7 +454,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                           style: TextStyle(
                             color: Theme.of(
                               context,
-                            ).colorScheme.onSurface.withOpacity(0.7),
+                            ).colorScheme.onSurface.withValues(alpha:0.7),
                           ),
                         ),
                       ],
@@ -788,7 +788,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                       BoxShadow(
                         color: Theme.of(
                           context,
-                        ).colorScheme.shadow.withOpacity(0.1),
+                        ).colorScheme.shadow.withValues(alpha:0.1),
                         blurRadius: 10,
                         offset: const Offset(0, 4),
                       ),
@@ -814,7 +814,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                       style: TextStyle(
                         color: Theme.of(
                           context,
-                        ).colorScheme.onSurface.withOpacity(0.7),
+                        ).colorScheme.onSurface.withValues(alpha:0.7),
                       ),
                     ),
                     isThreeLine: true,
@@ -862,7 +862,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                               fontSize: 12,
                               color: Theme.of(
                                 context,
-                              ).colorScheme.onSurface.withOpacity(0.5),
+                              ).colorScheme.onSurface.withValues(alpha:0.5),
                             ),
                           ),
                           if (order.trackingNumber != null)
@@ -917,7 +917,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                       BoxShadow(
                         color: Theme.of(
                           context,
-                        ).colorScheme.shadow.withOpacity(0.1),
+                        ).colorScheme.shadow.withValues(alpha:0.1),
                         blurRadius: 10,
                         offset: const Offset(0, 4),
                       ),
@@ -945,7 +945,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                       style: TextStyle(
                         color: Theme.of(
                           context,
-                        ).colorScheme.onSurface.withOpacity(0.7),
+                        ).colorScheme.onSurface.withValues(alpha:0.7),
                       ),
                     ),
                     trailing: Text(
@@ -1051,18 +1051,16 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: OrderStatus.values.map((status) {
-              return ListTile(
+              return RadioListTile<OrderStatus>(
+                value: status,
                 title: Text(status.name.toUpperCase()),
-                leading: Radio<OrderStatus>(
-                  value: status,
-                  groupValue: order.status,
-                  onChanged: (OrderStatus? value) {
-                    if (value != null) {
-                      Navigator.of(context).pop();
-                      _updateOrderStatus(order, value);
-                    }
-                  },
-                ),
+                groupValue: order.status,
+                onChanged: (OrderStatus? value) {
+                  if (value != null) {
+                    Navigator.of(context).pop();
+                    _updateOrderStatus(order, value);
+                  }
+                },
               );
             }).toList(),
           ),

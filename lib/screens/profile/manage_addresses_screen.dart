@@ -307,7 +307,7 @@ class _ManageAddressesScreenState extends State<ManageAddressesScreen> {
                     size: 64,
                     color: Theme.of(
                       context,
-                    ).colorScheme.onSurface.withOpacity(0.5),
+                    ).colorScheme.onSurface.withValues(alpha:0.5),
                   ),
                   const SizedBox(height: 16),
                   Text(
@@ -324,7 +324,7 @@ class _ManageAddressesScreenState extends State<ManageAddressesScreen> {
                     style: TextStyle(
                       color: Theme.of(
                         context,
-                      ).colorScheme.onSurface.withOpacity(0.7),
+                      ).colorScheme.onSurface.withValues(alpha:0.7),
                     ),
                   ),
                   const SizedBox(height: 24),
@@ -379,7 +379,7 @@ class _ManageAddressesScreenState extends State<ManageAddressesScreen> {
                         style: TextStyle(
                           color: Theme.of(
                             context,
-                          ).colorScheme.onSurface.withOpacity(0.7),
+                          ).colorScheme.onSurface.withValues(alpha:0.7),
                         ),
                       ),
                       if (address.isDefault)
@@ -392,7 +392,7 @@ class _ManageAddressesScreenState extends State<ManageAddressesScreen> {
                           decoration: BoxDecoration(
                             color: Theme.of(
                               context,
-                            ).colorScheme.primary.withOpacity(0.1),
+                            ).colorScheme.primary.withValues(alpha:0.1),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Text(

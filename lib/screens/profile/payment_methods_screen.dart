@@ -419,7 +419,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
                   Icon(
                     Icons.credit_card_off_outlined,
                     size: 64,
-                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha:0.5),
                   ),
                   const SizedBox(height: 16),
                   Text(
@@ -434,7 +434,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
                   Text(
                     'Add your first payment method to get started',
                     style: TextStyle(
-                      color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+                      color: Theme.of(context).colorScheme.onSurface.withValues(alpha:0.7),
                     ),
                   ),
                   const SizedBox(height: 24),
@@ -485,19 +485,19 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
                       Text(
                         '•••• ${paymentMethod.lastFourDigits}',
                         style: TextStyle(
-                          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha:0.7),
                         ),
                       ),
                       Text(
                         paymentMethod.cardHolderName,
                         style: TextStyle(
-                          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha:0.7),
                         ),
                       ),
                       Text(
                         'Expires: ${paymentMethod.expiryDate}',
                         style: TextStyle(
-                          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha:0.7),
                         ),
                       ),
                       if (paymentMethod.isDefault)
@@ -508,7 +508,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
                             vertical: 2,
                           ),
                           decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                            color: Theme.of(context).colorScheme.primary.withValues(alpha:0.1),
                             borderRadius: BorderRadius.circular(12),
                           ),
         child: Text(
