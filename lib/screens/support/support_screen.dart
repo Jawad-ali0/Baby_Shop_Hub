@@ -44,7 +44,9 @@ class _SupportScreenState extends State<SupportScreen> {
               borderRadius: BorderRadius.circular(12),
               boxShadow: [
                 BoxShadow(
-                  color: Theme.of(context).colorScheme.shadow.withValues(alpha: 0.1),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.shadow.withValues(alpha: 0.1),
                   blurRadius: 10,
                   offset: const Offset(0, 4),
                 ),
@@ -150,9 +152,8 @@ class _SupportScreenState extends State<SupportScreen> {
                               Text(
                                 _formatDate(ticket.createdAt),
                                 style: TextStyle(
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.onSurface.withValues(alpha: 0.5),
+                                  color: Theme.of(context).colorScheme.onSurface
+                                      .withValues(alpha: 0.5),
                                   fontSize: 12,
                                 ),
                               ),
@@ -201,7 +202,9 @@ class _SupportScreenState extends State<SupportScreen> {
           Text(
             'Create a support ticket if you need help',
             style: TextStyle(
-              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface.withValues(alpha: 0.7),
               fontSize: 16,
             ),
             textAlign: TextAlign.center,
@@ -259,9 +262,10 @@ class _SupportScreenState extends State<SupportScreen> {
                         borderRadius: BorderRadius.all(Radius.circular(12)),
                       ),
                       filled: true,
-                      fillColor: Theme.of(
-                        context,
-                      ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+                      fillColor: Theme.of(context)
+                          .colorScheme
+                          .surfaceContainerHighest
+                          .withValues(alpha: 0.3),
                     ),
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
@@ -280,9 +284,10 @@ class _SupportScreenState extends State<SupportScreen> {
                         borderRadius: BorderRadius.all(Radius.circular(12)),
                       ),
                       filled: true,
-                      fillColor: Theme.of(
-                        context,
-                      ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+                      fillColor: Theme.of(context)
+                          .colorScheme
+                          .surfaceContainerHighest
+                          .withValues(alpha: 0.3),
                     ),
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
@@ -294,53 +299,63 @@ class _SupportScreenState extends State<SupportScreen> {
                   const SizedBox(height: 16),
                   Row(
                     children: [
-                      Expanded(
+                      Flexible(
                         child: DropdownButtonFormField<String>(
                           initialValue: selectedCategory,
                           decoration: InputDecoration(
                             labelText: 'Category',
+                            isDense: true,
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
                                 Radius.circular(12),
                               ),
                             ),
                             filled: true,
-                            fillColor: Theme.of(
-                              context,
-                            ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+                            fillColor: Theme.of(context)
+                                .colorScheme
+                                .surfaceContainerHighest
+                                .withValues(alpha: 0.3),
                           ),
                           items: ['general', 'technical', 'billing', 'order']
                               .map(
                                 (category) => DropdownMenuItem(
                                   value: category,
-                                  child: Text(category.toUpperCase()),
+                                  child: Text(
+                                    category.toUpperCase(),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
                               )
                               .toList(),
                           onChanged: (value) => selectedCategory = value!,
                         ),
                       ),
-                      const SizedBox(width: 16),
-                      Expanded(
+                      const SizedBox(width: 8),
+                      Flexible(
                         child: DropdownButtonFormField<String>(
                           initialValue: selectedPriority,
                           decoration: InputDecoration(
                             labelText: 'Priority',
+                            isDense: true,
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
                                 Radius.circular(12),
                               ),
                             ),
                             filled: true,
-                            fillColor: Theme.of(
-                              context,
-                            ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+                            fillColor: Theme.of(context)
+                                .colorScheme
+                                .surfaceContainerHighest
+                                .withValues(alpha: 0.3),
                           ),
                           items: ['low', 'medium', 'high', 'urgent']
                               .map(
                                 (priority) => DropdownMenuItem(
                                   value: priority,
-                                  child: Text(priority.toUpperCase()),
+                                  child: Text(
+                                    priority.toUpperCase(),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
                               )
                               .toList(),
@@ -360,7 +375,9 @@ class _SupportScreenState extends State<SupportScreen> {
             child: Text(
               'Cancel',
               style: TextStyle(
-                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.7),
               ),
             ),
           ),
