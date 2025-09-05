@@ -483,7 +483,8 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
           const SizedBox(height: 16),
 
           // Products list
-          Expanded(
+          SizedBox(
+            height: 400, // Fixed height for the products list
             child: filteredProducts.isEmpty
                 ? Center(
                     child: Column(
@@ -830,7 +831,8 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
             ),
           ),
           const SizedBox(height: 16),
-          Expanded(
+          SizedBox(
+            height: 400, // Fixed height for the orders list
             child: ListView.builder(
               itemCount: orders.length,
               itemBuilder: (context, index) {
@@ -959,7 +961,8 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
             ),
           ),
           const SizedBox(height: 16),
-          Expanded(
+          SizedBox(
+            height: 400, // Fixed height for the support tickets list
             child: ListView.builder(
               itemCount: tickets.length,
               itemBuilder: (context, index) {
