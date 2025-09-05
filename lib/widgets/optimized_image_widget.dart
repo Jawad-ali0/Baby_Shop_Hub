@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'shimmer_widget.dart';
@@ -101,11 +102,17 @@ class _OptimizedImageWidgetState extends State<OptimizedImageWidget>
 
   Widget _buildBase64Image() {
     try {
-      final uri = Uri.dataFromString(widget.imageUrl);
-      final bytes = uri.data?.contentAsBytes();
-      if (bytes == null) {
+      // Extract Base64 data - same logic as Base64ImageWidget
+      final parts = widget.imageUrl.split(',');
+      if (parts.length != 2) {
+        debugPrint('OptimizedImageWidget: Invalid Base64 format - parts length: ${parts.length}');
         return _buildErrorWidget();
       }
+
+      final base64Data = parts[1];
+      debugPrint('OptimizedImageWidget: Base64 data length: ${base64Data.length}');
+      final bytes = base64Decode(base64Data);
+      debugPrint('OptimizedImageWidget: Decoded bytes length: ${bytes.length}');
       
       return ClipRRect(
         borderRadius: widget.borderRadius ?? BorderRadius.zero,
@@ -115,11 +122,13 @@ class _OptimizedImageWidgetState extends State<OptimizedImageWidget>
           height: widget.height,
           fit: widget.fit,
           errorBuilder: (context, error, stackTrace) {
+            debugPrint('OptimizedImageWidget: Image.memory error: $error');
             return _buildErrorWidget();
           },
         ),
       );
     } catch (e) {
+      debugPrint('OptimizedImageWidget: Base64 decode error: $e');
       return _buildErrorWidget();
     }
   }
@@ -149,10 +158,13 @@ class _OptimizedImageWidgetState extends State<OptimizedImageWidget>
     Widget imageWidget;
 
     if (widget.imageUrl.isEmpty) {
+      debugPrint('OptimizedImageWidget: Empty imageUrl');
       imageWidget = _buildErrorWidget();
     } else if (widget.imageUrl.startsWith('data:image/')) {
+      debugPrint('OptimizedImageWidget: Base64 image detected: ${widget.imageUrl.substring(0, 50)}...');
       imageWidget = _buildBase64Image();
     } else {
+      debugPrint('OptimizedImageWidget: Network image: ${widget.imageUrl}');
       imageWidget = _buildNetworkImage();
     }
 
