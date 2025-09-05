@@ -55,14 +55,26 @@ class MyApp extends StatelessWidget {
           final themed = theme.isHighContrast
               ? baseTheme.copyWith(
                   textTheme: baseTheme.textTheme.apply(
-                    bodyColor: theme.effectiveIsDark ? Colors.white : Colors.black,
-                    displayColor: theme.effectiveIsDark ? Colors.white : Colors.black,
+                    bodyColor: theme.effectiveIsDark
+                        ? Colors.white
+                        : Colors.black,
+                    displayColor: theme.effectiveIsDark
+                        ? Colors.white
+                        : Colors.black,
                   ),
                   colorScheme: baseTheme.colorScheme.copyWith(
-                    primary: theme.effectiveIsDark ? Colors.white : Colors.black,
-                    secondary: theme.effectiveIsDark ? Colors.white : Colors.black,
-                    onSurface: theme.effectiveIsDark ? Colors.white : Colors.black,
-                    onBackground: theme.effectiveIsDark ? Colors.white : Colors.black,
+                    primary: theme.effectiveIsDark
+                        ? Colors.white
+                        : Colors.black,
+                    secondary: theme.effectiveIsDark
+                        ? Colors.white
+                        : Colors.black,
+                    onSurface: theme.effectiveIsDark
+                        ? Colors.white
+                        : Colors.black,
+                    onBackground: theme.effectiveIsDark
+                        ? Colors.white
+                        : Colors.black,
                   ),
                 )
               : baseTheme;
@@ -74,8 +86,8 @@ class MyApp extends StatelessWidget {
             routes: AppRouter.routes,
             onGenerateRoute: AppRouter.onGenerateRoute,
             onUnknownRoute: (settings) {
-              print('❌ MaterialApp: Unknown route requested: ${settings.name}');
-              print(
+              debugPrint('❌ MaterialApp: Unknown route requested: ${settings.name}');
+              debugPrint(
                 '❌ MaterialApp: Available routes: ${AppRouter.routes.keys.toList()}',
               );
               return MaterialPageRoute(
@@ -88,7 +100,7 @@ class MyApp extends StatelessWidget {
             },
             debugShowCheckedModeBanner: false,
             builder: (context, child) {
-              print(
+              debugPrint(
                 '🔍 MaterialApp: Building with routes: ${AppRouter.routes.keys.toList()}',
               );
               return Column(

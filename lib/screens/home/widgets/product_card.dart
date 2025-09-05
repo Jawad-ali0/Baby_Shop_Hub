@@ -22,7 +22,7 @@ class ProductCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Theme.of(context).colorScheme.shadow.withValues(alpha: 0.1),
+            color: Theme.of(context).colorScheme.shadow.withOpacity(0.1),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -42,7 +42,7 @@ class ProductCard extends StatelessWidget {
                   borderRadius: const BorderRadius.vertical(
                     top: Radius.circular(16),
                   ),
-                  color: Theme.of(context).colorScheme.surfaceVariant.withValues(alpha: 0.3),
+                  color: Theme.of(context).colorScheme.surface.withOpacity(0.08),
                 ),
                 child: OptimizedProductImage(
                   imageUrl: product.imageUrl,
@@ -78,8 +78,8 @@ class ProductCard extends StatelessWidget {
                   Text(
                     product.category,
                     style: TextStyle(
-                      fontSize: 12, 
-                      color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                      fontSize: 12,
+                      color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -119,7 +119,7 @@ class ProductCard extends StatelessWidget {
                         '(${product.reviewCount})',
                         style: TextStyle(
                           fontSize: 11,
-                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
                         ),
                       ),
                     ],

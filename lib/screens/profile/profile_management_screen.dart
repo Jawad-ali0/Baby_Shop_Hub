@@ -76,8 +76,8 @@ class ProfileManagementScreen extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton.icon(
                 onPressed: () {
-                  print('🔍 ProfileScreen: Login button pressed');
-                  print(
+                  debugPrint('🔍 ProfileScreen: Login button pressed');
+                  debugPrint(
                     '🔍 ProfileScreen: Requesting route: ${AppRouter.login}',
                   );
                   Navigator.pushNamed(context, AppRouter.login);
@@ -102,8 +102,8 @@ class ProfileManagementScreen extends StatelessWidget {
               width: double.infinity,
               child: OutlinedButton.icon(
                 onPressed: () {
-                  print('🔍 ProfileScreen: Register button pressed');
-                  print(
+                  debugPrint('🔍 ProfileScreen: Register button pressed');
+                  debugPrint(
                     '🔍 ProfileScreen: Requesting route: ${AppRouter.register}',
                   );
                   Navigator.pushNamed(context, AppRouter.register);
@@ -184,7 +184,7 @@ class ProfileManagementScreen extends StatelessWidget {
                     fontSize: 16,
                     color: Theme.of(
                       context,
-                    ).colorScheme.onSurface.withValues(alpha:0.7),
+                    ).colorScheme.onSurface.withValues(alpha: 0.7),
                   ),
                 ),
                 const SizedBox(height: 16),

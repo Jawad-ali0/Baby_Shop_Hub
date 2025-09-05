@@ -120,9 +120,9 @@ class _AddEditProductScreenState extends State<AddEditProductScreen> {
                       child: ImagePickerWidget(
                         currentImageUrl: _imageUrl,
                         onImageSelected: (String imageUrl) {
-                          print(
+                          debugPrint(
                             '🖼️ AddEditProductScreen: Image selected callback: $imageUrl',
-                          ); // Debug log
+                          );
                           if (mounted) {
                             setState(() {
                               _imageUrl = imageUrl;
@@ -130,9 +130,9 @@ class _AddEditProductScreenState extends State<AddEditProductScreen> {
                           }
                         },
                         onUploadingChanged: (bool isUploading) {
-                          print(
+                          debugPrint(
                             '📤 AddEditProductScreen: Uploading changed callback: $isUploading',
-                          ); // Debug log
+                          );
                           if (mounted) {
                             setState(() {
                               _imageUploading = isUploading;
@@ -534,7 +534,7 @@ class _AddEditProductScreenState extends State<AddEditProductScreen> {
       return;
     }
 
-    print(
+    debugPrint(
       '_saveProduct: All validations passed. Proceeding to set _isLoading = true.',
     );
     if (mounted) {
@@ -542,14 +542,14 @@ class _AddEditProductScreenState extends State<AddEditProductScreen> {
         _isLoading = true;
       });
     } else {
-      print(
+      debugPrint(
         '_saveProduct: Component unmounted before setting _isLoading. Aborting.',
       );
       return;
     }
 
     try {
-      print('💾 Saving product with imageUrl: $_imageUrl');
+      debugPrint('💾 Saving product with imageUrl: $_imageUrl');
 
       final productData = Product(
         id:

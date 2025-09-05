@@ -134,7 +134,7 @@ class Base64StorageService {
       productData.removeWhere((key, value) => value == null);
 
       await _db.child('products').child(productId).set(productData);
-      print('✅ Product stored with Base64 image: $name');
+      debugPrint('✅ Product stored with Base64 image: $name');
     } catch (e) {
       throw Exception('Failed to store product: $e');
     }
@@ -162,7 +162,7 @@ class Base64StorageService {
   Future<void> deleteProduct(String productId) async {
     try {
       await _db.child('products').child(productId).remove();
-      print('✅ Product deleted: $productId');
+      debugPrint('✅ Product deleted: $productId');
     } catch (e) {
       throw Exception('Failed to delete product: $e');
     }
@@ -176,7 +176,7 @@ class Base64StorageService {
           .child('products')
           .child(product.id)
           .set(updatedProduct.toJson());
-      print('✅ Product updated: ${product.name}');
+      debugPrint('✅ Product updated: ${product.name}');
     } catch (e) {
       throw Exception('Failed to update product: $e');
     }
@@ -237,7 +237,7 @@ class Base64StorageService {
           return 'data:image/jpeg;base64,$base64String';
         } catch (e) {
           // If direct reading fails, try alternative approach
-          print('Direct reading failed, trying alternative: $e');
+          debugPrint('Direct reading failed, trying alternative: $e');
 
           if (image.path.isNotEmpty) {
             final bytes = await image.readAsBytes();

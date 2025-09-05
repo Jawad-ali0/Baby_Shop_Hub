@@ -127,7 +127,7 @@ class CheckoutService extends ChangeNotifier {
 
     // In a real app, you would integrate with a payment processor like Stripe, PayPal, etc.
     // For now, we'll simulate a successful payment
-    print(
+    debugPrint(
       'Processing payment of \$${amount.toStringAsFixed(2)} with ${paymentMethod.type} ending in ${paymentMethod.lastFourDigits}',
     );
   }

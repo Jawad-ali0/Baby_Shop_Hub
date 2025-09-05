@@ -46,7 +46,7 @@ class ProductService extends ChangeNotifier {
         await _createBasicProducts();
       }
     } catch (e) {
-      print('Error ensuring basic products: $e');
+      debugPrint('Error ensuring basic products: $e');
     }
   }
 
@@ -167,9 +167,9 @@ class ProductService extends ChangeNotifier {
             .child(productData['id'] as String)
             .set(productData);
       }
-      print('Basic products created successfully');
+      debugPrint('Basic products created successfully');
     } catch (e) {
-      print('Error creating basic products: $e');
+      debugPrint('Error creating basic products: $e');
     }
   }
 
@@ -197,7 +197,7 @@ class ProductService extends ChangeNotifier {
                       // Validate required fields before parsing
                       if (productData['name'] == null ||
                           productData['name'].toString().isEmpty) {
-                        print(
+                        debugPrint(
                           'Warning: Product ${entry.key} has null/empty name, skipping...',
                         );
                         return null;
@@ -205,8 +205,8 @@ class ProductService extends ChangeNotifier {
 
                       return Product.fromJson(productData);
                     } catch (e) {
-                      print('Error parsing product ${entry.key}: $e');
-                      print('Product data: ${entry.value}');
+                      debugPrint('Error parsing product ${entry.key}: $e');
+                      debugPrint('Product data: ${entry.value}');
                       return null;
                     }
                   })
@@ -315,28 +315,28 @@ class ProductService extends ChangeNotifier {
                 productData['price'] == null ||
                 productData['category'] == null) {
               corruptedProducts.add(entry.key);
-              print('Found corrupted product: ${entry.key} - ${entry.value}');
+              debugPrint('Found corrupted product: ${entry.key} - ${entry.value}');
             }
           } catch (e) {
             corruptedProducts.add(entry.key);
-            print('Error validating product ${entry.key}: $e');
+            debugPrint('Error validating product ${entry.key}: $e');
           }
         }
 
         // Remove corrupted products
         for (final productId in corruptedProducts) {
           await _db.child('products').child(productId).remove();
-          print('Removed corrupted product: $productId');
+          debugPrint('Removed corrupted product: $productId');
         }
 
         if (corruptedProducts.isNotEmpty) {
-          print('Cleaned up ${corruptedProducts.length} corrupted products');
+          debugPrint('Cleaned up ${corruptedProducts.length} corrupted products');
           // Refresh products list
           _loadProducts();
         }
       }
     } catch (e) {
-      print('Error cleaning up corrupted products: $e');
+      debugPrint('Error cleaning up corrupted products: $e');
     }
   }
 
@@ -542,7 +542,7 @@ class ProductService extends ChangeNotifier {
 
       return true;
     } catch (e) {
-      print('Error repairing product $productId: $e');
+      debugPrint('Error repairing product $productId: $e');
       return false;
     }
   }

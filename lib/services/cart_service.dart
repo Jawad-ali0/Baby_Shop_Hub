@@ -72,13 +72,13 @@ class CartService extends ChangeNotifier {
   String? _currentUserId;
 
   void initialize(String userId) {
-    print('🚀 CartService: Initializing with user ID: $userId');
+    debugPrint('🚀 CartService: Initializing with user ID: $userId');
     _currentUserId = userId;
     if (userId.isNotEmpty) {
-      print('✅ CartService: User ID set, loading cart...');
+      debugPrint('✅ CartService: User ID set, loading cart...');
       _loadCart();
     } else {
-      print('❌ CartService: Empty user ID, clearing cart');
+      debugPrint('❌ CartService: Empty user ID, clearing cart');
       _items = [];
       _isLoading = false;
       _error = null;
@@ -87,10 +87,10 @@ class CartService extends ChangeNotifier {
   }
 
   void _loadCart() {
-    print('🔄 CartService: Loading cart for user: $_currentUserId');
+    debugPrint('🔄 CartService: Loading cart for user: $_currentUserId');
 
     if (_currentUserId == null) {
-      print('❌ CartService: No user ID, cannot load cart');
+      debugPrint('❌ CartService: No user ID, cannot load cart');
       return;
     }
 
@@ -98,7 +98,7 @@ class CartService extends ChangeNotifier {
     _error = null;
     notifyListeners();
 
-    print(
+    debugPrint(
       '📡 CartService: Setting up Firebase listener for path: carts/$_currentUserId',
     );
     _cartSubscription = _db
@@ -107,12 +107,16 @@ class CartService extends ChangeNotifier {
         .onValue
         .listen(
           (event) {
-            print('📡 CartService: Received Firebase event: ${event.type}');
+            debugPrint(
+              '📡 CartService: Received Firebase event: ${event.type}',
+            );
             _isLoading = false;
             final data = event.snapshot.value as Map<dynamic, dynamic>?;
 
             if (data != null) {
-              print('📦 CartService: Cart data received: ${data.length} items');
+              debugPrint(
+                '📦 CartService: Cart data received: ${data.length} items',
+              );
               _items = data.entries
                   .map(
                     (entry) => CartItem.fromJson(
@@ -120,16 +124,18 @@ class CartService extends ChangeNotifier {
                     ),
                   )
                   .toList();
-              print('✅ CartService: Cart loaded with ${_items.length} items');
+              debugPrint(
+                '✅ CartService: Cart loaded with ${_items.length} items',
+              );
             } else {
-              print('📭 CartService: No cart data found, cart is empty');
+              debugPrint('📭 CartService: No cart data found, cart is empty');
               _items = [];
             }
 
             notifyListeners();
           },
           onError: (error) {
-            print('❌ CartService: Error loading cart: $error');
+            debugPrint('❌ CartService: Error loading cart: $error');
             _isLoading = false;
             _error = error.toString();
             notifyListeners();
@@ -138,11 +144,11 @@ class CartService extends ChangeNotifier {
   }
 
   Future<void> addToCart(Product product, {int quantity = 1}) async {
-    print('🛒 CartService: Adding product to cart: ${product.name}');
-    print('🛒 CartService: Current user ID: $_currentUserId');
+    debugPrint('🛒 CartService: Adding product to cart: ${product.name}');
+    debugPrint('🛒 CartService: Current user ID: $_currentUserId');
 
     if (_currentUserId == null) {
-      print('❌ CartService: No user ID, cannot add to cart');
+      debugPrint('❌ CartService: No user ID, cannot add to cart');
       return;
     }
 
@@ -153,13 +159,13 @@ class CartService extends ChangeNotifier {
 
       if (existingItemIndex != -1) {
         // Update existing item
-        print('🔄 CartService: Updating existing item quantity');
+        debugPrint('🔄 CartService: Updating existing item quantity');
         final existingItem = _items[existingItemIndex];
         final newQuantity = existingItem.quantity + quantity;
         await _updateCartItem(product.id, newQuantity);
       } else {
         // Add new item
-        print('➕ CartService: Adding new item to cart');
+        debugPrint('➕ CartService: Adding new item to cart');
         final cartItem = CartItem(
           productId: product.id,
           productName: product.name,
@@ -168,7 +174,7 @@ class CartService extends ChangeNotifier {
           quantity: quantity,
         );
 
-        print(
+        debugPrint(
           '💾 CartService: Saving to Firebase at path: carts/$_currentUserId/${product.id}',
         );
 
@@ -181,10 +187,10 @@ class CartService extends ChangeNotifier {
             .child(_currentUserId!)
             .child(product.id)
             .set(cartItemData);
-        print('✅ CartService: Product saved to Firebase successfully');
+        debugPrint('✅ CartService: Product saved to Firebase successfully');
       }
     } catch (e) {
-      print('❌ CartService: Error adding to cart: $e');
+      debugPrint('❌ CartService: Error adding to cart: $e');
       _error = e.toString();
       notifyListeners();
       rethrow;

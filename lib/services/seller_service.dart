@@ -178,13 +178,13 @@ class SellerService extends ChangeNotifier {
                         }
                         return OrderModel.fromJson(orderData);
                       } else {
-                        print(
+                        debugPrint(
                           'Warning: Order data is not a Map: ${entry.value}',
                         );
                         return null;
                       }
                     } catch (e) {
-                      print('Error parsing order ${entry.key}: $e');
+                      debugPrint('Error parsing order ${entry.key}: $e');
                       return null;
                     }
                   })

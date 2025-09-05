@@ -73,7 +73,7 @@ class AuthService extends ChangeNotifier {
                   _orderService!.initialize(userId);
                 }
               } catch (e) {
-                print('Error parsing user profile: $e');
+                debugPrint('Error parsing user profile: $e');
                 _userModel = null;
               }
             } else {
@@ -82,7 +82,7 @@ class AuthService extends ChangeNotifier {
             notifyListeners();
           },
           onError: (error) {
-            print('Error loading user profile: $error');
+            debugPrint('Error loading user profile: $error');
             _userModel = null;
             notifyListeners();
           },

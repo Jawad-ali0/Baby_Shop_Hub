@@ -233,7 +233,7 @@ class ReviewService extends ChangeNotifier {
       }
     } catch (e) {
       // Handle error silently for product rating update
-      print('Error updating product rating: $e');
+      debugPrint('Error updating product rating: $e');
     }
   }
 
